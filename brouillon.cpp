@@ -23,7 +23,23 @@ public:
 
 */
 
-/*
+int main(){
+
+	typedef std::map< int, int* > etapes;
+
+
+	int coords[2];
+
+	coords[0]= 38;
+	coords[1]= 89;
+
+
+	etapes c1;
+
+	cout << "coord1 = " << coords[0] << "   coord2 = " << coords[1] << "   coord = " << coords << endl;
+
+	c1.insert(std::pair<int, int*>(1, coords));
+
 
 	string const nomFichier("/Users/salmabadri/Documents/Cours L3/Projet/mesEtapes.txt");
 
@@ -32,37 +48,13 @@ public:
 
 	if(maTrajectoire)  //On teste si tout est OK
 		{
-			maTrajectoire << "Bonjour, c'est seulement un test." << endl;
-
-
+			maTrajectoire << "l'étape 1 a " << c1[1][0] << "," << c1[1][1] << " comme coordonnées"<< endl;
 		}
 	else {
 		cout << "ERREUR: Impossible d'ouvrir le fichier." << endl;
 	}
 
-*/
-
-
-int main(){
-
-	typedef std::map< int, int* > etapes;
-
-	int coords[2]={0, 0};
-
-	int* p(0);
-
-	p= coords;
-
-	*p= 38;
-	*(p+1) = 89;
-
-
-	etapes c1;
-
-	printf("p= %p, coords[0]= %d \n", p, coords[0]);
-
-
-	c1.insert(std::pair<int, int*>(1, coords));
+	
 
 	/*
 	c1.insert(etapes::value_type(2, [40, 78]));
@@ -70,14 +62,11 @@ int main(){
 	*/
 
 
-	cout << "l'étape 1 a " << c1[1] << "comme coordonnées" << endl;
-
 	/*
 	cout << "l'étape 2 a " << c1.at(2) << "comme coordonnées" << endl;
 	cout << "l'étape 3 a " << c1.at(3) << "comme coordonnées" << endl;
 	*/
 
-	p = 0;
 
 	return 0;
 }
