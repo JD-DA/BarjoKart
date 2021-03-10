@@ -23,7 +23,7 @@ public:
 
 */
 
-int main(){
+int maintest(){
 
 	typedef std::map< int, int* > etapes;
 

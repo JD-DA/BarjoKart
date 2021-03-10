@@ -5,6 +5,7 @@
 #include <png++/png.hpp>
 #include <toml++/toml.h>
 #include "image.hpp"
+#include "trajectoire.hpp"
 
 
 
@@ -14,7 +15,10 @@ int main(){
 	
 	//img.load_data("circuits/circuit0.png","circuits/circuit0.toml");
 	//img.load_data("circuits/fusee.png","circuits/fusee.toml");
-	img.load_data("circuits/trois_quatorze.png","circuits/trois_quatorze.toml");
+	//img.load_data("circuits/trois_quatorze.png","circuits/trois_quatorze.toml");
 
-	img.affichage("image.pgm");
+	//img.affichage("image.pgm");
+	Trajectoire tr = Trajectoire(&img);
+	tr.build_fake_trajectoire();
+	//tr.verifier_trajectoire();
 }

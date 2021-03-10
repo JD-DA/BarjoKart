@@ -12,11 +12,11 @@ Image::Image(){
 }
 
 Image::~Image(){
-	for (int i = 0; i < height; ++i)
+	/*for (int i = 0; i < height; ++i)
 	{
 		delete(matrice[i]);
 	}
-	delete(matrice);
+	delete(matrice);*/
 }
 
 void Image::build_image(std::string fichier){
@@ -146,5 +146,11 @@ else{
 }
 }
 
+bool Image::verifierPixel(int x,int y){
+	return matrice[height-x][y]!='n';
+}
 
+bool Image::verifierArrivee(int x,int y){
+	return matrice[height-x][y]=='a';
+}
 

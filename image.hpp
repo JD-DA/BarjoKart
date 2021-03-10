@@ -25,6 +25,8 @@ public:
 	void build_image(std::string);
 	void load_data(std::string,std::string);
 	void affichage(char*);
+	bool verifierPixel(int,int);
+	bool verifierArrivee(int,int);
 	virtual ~Image();
 };
 
