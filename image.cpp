@@ -12,11 +12,11 @@ Image::Image(){
 }
 
 Image::~Image(){
-	/*for (int i = 0; i < height; ++i)
+	for (int i = 0; i < height; ++i)
 	{
 		delete(matrice[i]);
 	}
-	delete(matrice);*/
+	delete(matrice);
 }
 
 void Image::build_image(std::string fichier){
@@ -132,6 +132,7 @@ std::cout<<"Écriture PGM..."<<std::endl;
 			}else if (cara=='a'){
 				num = 200;
 			}else{
+				std::cout<<"Charactère bizarre : i="<<i<<" j="<<j<<std::endl;
 				num = 100;
 			}
 			fprintf(fichier, "%d ", num);
@@ -147,10 +148,11 @@ else{
 }
 
 bool Image::verifierPixel(int x,int y){
-	return matrice[height-x][y]!='n';
+	std::cout<<x-1<<';'<<y-1<<' '<<matrice[y-1][x-1];
+	return matrice[y-1][x-1]!='n';
 }
 
 bool Image::verifierArrivee(int x,int y){
-	return matrice[height-x][y]=='a';
+	return matrice[y-1][x-1]=='a';
 }
 

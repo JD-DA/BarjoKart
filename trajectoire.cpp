@@ -7,74 +7,88 @@
 
 #include "trajectoire.hpp"
 
-Trajectoire::Trajectoire(Image* pt):etapes(){
+Trajectoire::Trajectoire(Image* pt){
 	img=pt;
-	departureX=100;
-	departureY=100;
+load_data();
 }
 
 Trajectoire::~Trajectoire(){
 	
 }
 
-void Trajectoire::load_data(int x,int y,int max){
-	departureX = x;
-	departureY = y;
-	maxAcceleration = max;
-	int tab[] = {x,y};
-	etapes.insert({0,tab});
+void Trajectoire::load_data(){
+	departureX = img->departureX;
+	departureY = img->departureY;
+	maxAcceleration = img->maxAcceleration;
+	std::cout<<"Chargement des données de la trajectoire..."<<std::endl;
+	std::cout<<" x "<<departureX<<" y "<<departureY<<" maxAcceleration "<<maxAcceleration<<std::endl;
+	etapes.insert(std::pair<int,std::pair<int,int>>(0,std::pair<int,int>(departureX,departureY)));
 	size=1;
+
+	for (int i=0; i < size; ++i)
+			{
+				std::cout << "[" << etapes[i].first << "," << etapes[i].second << "],";
+			}
+			std::cout << "]"<< std::endl;
+
+	/*std::cout<<"Tab : "<<tab<<std::endl;
+	std::cout<<"Etapes : "<<etapes<<std::endl;*/
 }
 
 void Trajectoire::build_fake_trajectoire(){
-	int xp = departureX;
-	int yp = departureY;
-	for (int i = 1; i < 11; ++i)
+	
+	for (int i = 1; i < 10; ++i)
 	{
-		int tab[] ={xp +=10,yp +=10};
-		etapes.insert({i,tab});
+		etapes.insert(std::pair<int,std::pair<int,int>>(i,std::pair<int,int>(departureX+0*i,departureY-10*i)));
 		size++;
-		std::cout<<etapes[i][0]<<' '<<etapes[i][1]<<std::endl;
+		//std::cout<<etapes[i].first<<' '<<etapes[i].second<<std::endl;
 	}
+
+	for (int i=0; i < size; ++i)
+			{
+				std::cout << "[" << etapes[i].first << "," << etapes[i].second << "],";
+			}
+			std::cout << "]"<< std::endl;
 }
 
-std::list<int*> Trajectoire::bresenham(int a, int b, int c, int d){
-}
 
 bool Trajectoire::verifier_trajectoire(){
+	std::cout<<"On lance la vérification..."<<std::endl;
+	for (int i=0; i < size; ++i)
+			{
+				std::cout << "[" << etapes[i].first << "," << etapes[i].second << "],";
+			}
+			std::cout << "]"<< std::endl;
 	for (int i = 1; i < size; ++i)
 	{
-		std::list<int*> traj = bresenham(etapes[i-1][0],etapes[i-1][1],etapes[i][0],etapes[i][1]);
-		/*std::list<int*>::iterator it = traj.begin();
-		int x_1 = (*it)[0];
-		int y_1 = (*it)[1];
-		it++;
-		int x_2 = (*it)[0];
-		int y_2 = (*it)[1];
-		for (it; it != traj.end(); ++it){
-		    if(not(img->verifierPixel((*it)[0],(*it)[1]))){
-				return false;
-			}
-			std::cout<<(*it)[0]<<' '<<(*it)[1]<<std::endl;
-		}*/
-
+		//std::cout<<"Pour "<<i<<" : ";
+		//std::list<int> traj = traceSegment(etapes[i-1].first,etapes[i-1].second,etapes[i].first,etapes[i].second);
+		//std::cout<<"On a calculé la droite entre "<<etapes[i-1].first<<" "<<etapes[i-1].second<<" et "<<etapes[i].first<<" "<<etapes[i].second<<std::endl;
 		//verification des pixels
-		for (std::list<int*>::iterator it = traj.begin(); it != traj.end(); ++it){
-		    if(not(img->verifierPixel((*it)[0],(*it)[1]))){
+		for (std::list<int>::iterator it = traj.begin(); it != traj.end(); ++it){
+			int x=(*it);
+			it++;
+			int y=(*it);
+		    if(not(img->verifierPixel(x,y))){
+		    	std::cout<<"On est rentré dans un mur..."<<std::endl;
 				return false;
 			}
-			std::cout<<(*it)[0]<<' '<<(*it)[1]<<std::endl;
+			//std::cout<<(*it)[0]<<' '<<(*it)[1]<<std::endl;
 		}
-
+		std::cout<<"  On a verifié les pixels "<<std::endl;
 		//verification acceleration
 
-		if(manhattan(etapes[i][0]-etapes[i-1][0],etapes[i][1]-etapes[i-1][1])> maxAcceleration){
+		if(manhattan(etapes[i].first-etapes[i-1].first,etapes[i].second-etapes[i-1].second)> maxAcceleration){
+			std::cout<<"On a fait un tonneau..."<<std::endl;
 			return false;
-		}	
+		}
+		std::cout<<"On a passé manhattan "<<std::endl;	
 	}
-	if(img->verifierArrivee(etapes[size-1][0],etapes[size-1][1])){
+	if(img->verifierArrivee(etapes[size-1].first,etapes[size-1].second)){
+		std::cout<<"On est arrivé !"<<std::endl;
 		return true;
 	}
+	std::cout<<"On est arrivé au milieu de nul part..."<<std::endl;
 	return false;
 }
 
@@ -86,18 +100,398 @@ void Trajectoire::load(std::string ftoml){
 	toml::table tbl;
 	try{
 		tbl = toml::parse_file(ftoml);
-		//std::cout<<tbl<<std::endl;
-		std::cout<<"Lecture du .toml..."<<std::endl;
-		int size = tbl["size"].value<int>().value();
-		for (int i = 0; i < size; ++i)
-		{
-			int tab[]={tbl["etapes"][i][0].value<int>().value(),tbl["etapes"][i][1].value<int>().value()};
-			etapes.insert({i,tab});
-		}
 		
+		std::cout<<"Lecture du .toml..."<<std::endl;
+		size = tbl["size"].value<int>().value();
+		for (int i = 1; i < size; ++i)
+		{
+			int x = tbl["trajectoire"][i][0].value<int>().value();
+			int y = tbl["trajectoire"][i][1].value<int>().value();
+			
+  			auto ret = this->etapes.insert(std::pair<int,std::pair<int,int>>(i,std::pair<int,int>(x,y)));
 
+			if (ret.second==false) {
+			    std::cout << "element "<<i<<" already existed";
+			    std::cout << " with a value of " << ret.first->second.first <<" "<<ret.first->second.first<< '\n';
+			  }
+
+			
+		}
 	}catch(const toml::parse_error& err){
 		std::cerr<<"La lecture du toml a échouée :\n"<<err<<"\n";
+	}
+}
+
+std::list<int> Trajectoire::traceSegment(int x1, int y1, int x2, int y2){
+    int dx, dy;
+    dx = x2 - x1; //distance entre point x1 et x2
+    std::list<int> liste;
+
+    if(dx != 0)
+    {
+        if(dx > 0 )
+        {
+            dy = y2 - y1; //distance entre point y1 et y2
+            if(dy != 0)
+            {
+                if(dy > 0)
+                {
+                    if(dx >= dy)
+                    {
+                        int e = dx;
+                        dx = e * 2;
+                        dy = dy * 2;
+                        
+                        while(true)
+                        {
+                        	/*int tab[] = {x1,y1};
+                        	std::cout<<x1<<' '<<y1<<std::endl;;*/
+                			liste.push_back(x1);
+                			liste.push_back(y1);
+                            //tracePixel(x1, y1);
+                            x1 = x1 + 1;
+                            if(x1 == x2)
+                            {
+                                break;
+                            }
+                            e -= dy;
+                            if(e < 0)
+                            {
+                                ++y1; // déplacement diagonal
+                                e += dx;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        int e = dy;
+                        dy = e * 2 ;
+                        dx = dx * 2 ;
+                        while(true)
+                        {  
+                        	/*int a,b;
+                	a=x1;
+                	b=x2;
+                    int tab[] = {x1,y1};
+                        	std::cout<<x1<<' '<<y1<<std::endl;;*/
+                			liste.push_back(x1);
+                			liste.push_back(y1);
+                            //tracePixel(x1, y1);
+                            ++y1;
+                            if(y1 == y2)
+                            {
+                                break;
+                            }
+                            e -= dx;
+                            if(e < 0)
+                            {
+                                ++x1;  // déplacement diagonal
+                                e += dy;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if( dx >= -dy)
+                    {
+                        int e = dx;
+                        dx = e * 2 ;
+                        dy = dy * 2 ;
+                        while(true)
+                        {  
+                        	/*int a,b;
+                	a=x1;
+                	b=x2;
+                    int tab[] = {x1,y1};
+                        	std::cout<<x1<<' '<<y1<<std::endl;;*/
+                			liste.push_back(x1);
+                			liste.push_back(y1);
+                            //tracePixel(x1, y1);
+                            ++x1;
+                            if(x1 == x2)
+                            {
+                                break;
+                            }
+                            e = e + dy;
+
+                            if(e < 0)
+                            {
+                                --y1;  // déplacement diagonal
+                                e = e + dx ;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        int e = dy;
+                        // e est négatif
+                        dy = e * 2 ;
+                        dx = dx * 2 ;  
+                        while(true)
+                        {  
+                            // déplacements verticaux
+                            /*int a,b;
+                	a=x1;
+                	b=x2;
+                    int tab[] = {x1,y1};
+                            std::cout<<x1<<' '<<y1<<std::endl;;*/
+                			liste.push_back(x1);
+                			liste.push_back(y1);
+                            //tracePixel(x1, y1);
+                            --y1;
+                            if(y1 == y2)
+                            {
+                                break;
+                            }
+                            e += dx;
+                            if(e > 0)
+                            {
+                                ++x1;  // déplacement diagonal
+                                e += dy ;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {  
+                do
+                {
+                	/*int a,b;
+                	a=x1;
+                	b=x2;
+                    int tab[] = {x1,y1};
+                	std::cout<<x1<<' '<<y1<<std::endl;*/
+                	liste.push_back(x1);
+                			liste.push_back(y1);
+                    //tracePixel(x1, y1);
+                    ++x1;
+                }
+                while(x1 != x2);
+            }
+        }
+        else // dx < 0
+        { 
+            dy = y2 - y1;
+            if(dy != 0)
+            {
+                if(dy > 0)
+                {
+                    // vecteur oblique dans le 2d quadran
+                    if(-dx >= dy)
+                    {
+                        // vecteur diagonal ou oblique proche de l’horizontale, dans le 4e octant
+                        int e = dx; // e est négatif
+                        dx = e * 2;
+                        dy = dy * 2;
+                        
+                        while(true)
+                        { 
+                            // déplacements horizontaux
+                            /*int a,b;
+                	a=x1;
+                	b=x2;
+                    int tab[] = {x1,y1};
+                            std::cout<<x1<<' '<<y1<<std::endl;;*/
+                			liste.push_back(x1);
+                			liste.push_back(y1);
+                            //tracePixel(x1, y1);
+                            --x1;
+                            if(x1 == x2)
+                            {
+                                break;
+                            }
+                            e += dy;
+                            if(e >= 0)
+                            {
+                                ++y1;  // déplacement diagonal
+                                e += dx;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // vecteur oblique proche de la verticale, dans le 3e octant
+                        int e = dy;
+                        dy = e * 2 ;
+                        dx = dx * 2 ;
+                        // e est positif
+                        while(true)
+                        {  // déplacements verticaux
+                        	/*int a,b;
+                	a=x1;
+                	b=x2;
+                    int tab[] = {x1,y1};
+                        	std::cout<<x1<<' '<<y1<<std::endl;;*/
+                			liste.push_back(x1);
+                			liste.push_back(y1);
+                            //tracePixel(x1, y1);
+                            ++y1;
+                            if(y1 == y2)
+                            {
+                                break;
+                            }
+                            e += dx;
+                            if(e <= 0)
+                            {
+                                --x1;  // déplacement diagonal
+                                e += dy ;
+                            }
+                        }
+                    }
+                }
+                else
+                {  // dy < 0 (et dx < 0)
+                    // vecteur oblique dans le 3e cadran
+                    if(dx <= dy)
+                    {
+                        // vecteur diagonal ou oblique proche de l’horizontale, dans le 5e octant
+                        int e = dx;
+                        dx = e * 2;
+                        dy = dy * 2;
+                        // e est négatif
+                        while(true)
+                        {  // déplacements horizontaux
+                        	/*int a,b;
+                	a=x1;
+                	b=x2;
+                    int tab[] = {x1,y1};
+                        	std::cout<<x1<<' '<<y1<<std::endl;;*/
+                			liste.push_back(x1);
+                			liste.push_back(y1);
+                            //tracePixel(x1, y1);
+                            --x1;
+                            if(x1 == x2)
+                            {
+                                break;
+                            }
+                            e -= dy;
+                            if(e >= 0)
+                            {
+                                --y1;  // déplacement diagonal
+                                e += dx ;
+                            }
+                        }
+                    }
+                    else
+                    {  // vecteur oblique proche de la verticale, dans le 6e octant
+                        int e = dy;
+                        dy = e * 2;
+                        dx = dx * 2;
+                        // e est négatif
+                        while(true)
+                        { // déplacements verticaux
+                        	/*int a,b;
+                	a=x1;
+                	b=x2;
+                    int tab[] = {x1,y1};
+                        	std::cout<<x1<<' '<<y1<<std::endl;;*/
+                			liste.push_back(x1);
+                			liste.push_back(y1);
+                            //tracePixel(x1, y1);
+                            --y1;
+                            if(y1==y2)
+                            {
+                                break;
+                            }
+                            e -= dx;
+                            if(e >= 0)
+                            {
+                                --x1;  // déplacement diagonal
+                                e += dy ;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {  // dy = 0 (et dx < 0)
+                // vecteur horizontal vers la gauche
+                do
+                {
+                	//int tab[] = {x1,y1};
+                	liste.push_back(x1);
+                			liste.push_back(y1);
+                    //tracePixel(x1, y1);
+                    --x1;
+                }
+                while(x1 != x2);
+            }
+        }
+    }
+    else // dx = 0
+    {
+        dy = y2 - y1;
+        //cout<<"dx=0 dy="<<dy<<endl;
+        if(dy != 0)
+        {
+            if(dy > 0)
+            {
+                // vecteur vertical croissant
+                do
+                {
+                    /*int a,b;
+                	a=x1;
+                	b=x2;
+                    int tab[] = {x1,y1};
+                    std::cout<<x1<<' '<<y1<<std::endl;;*/
+                	liste.push_back(x1);
+                			liste.push_back(y1);
+                    //tracePixel(x1, y1);
+                    ++y1;
+                }
+                while(y1 != y2);
+            }
+            else
+            { // dy < 0 (et dx = 0)
+                //cout<<"haut"<<endl;
+                // vecteur vertical décroissant
+                do
+                {
+                	/*int a,b;
+                	a=x1;
+                	b=x2
+                    int tab[] = {x1,y1};
+                    std::cout<<x1<<' '<<y1<<std::endl;;*/
+                	liste.push_back(x1);
+                			liste.push_back(y1);
+                    //tracePixel(x1, y1);
+                    --y1;
+                }
+                while(y1 != y2);
+            }
+        }
+    }
+
+
+		/*for (std::list<int>::iterator it = liste.begin(); it != liste.end(); ++it){
+		    int a = (*it);
+		    it++;
+		    int b = (*it);
+			std::cout<<a<<' '<<b<<std::endl;
+		}*/
+    // le pixel final (x2, y2) n’est pas tracé.
+	return liste;
+}
+
+void Trajectoire::write(std::string fichier){
+std::ofstream maTrajectoire(fichier);
+
+
+	if(maTrajectoire)  //On teste si tout est OK
+		{std::cout<<"Ecriture du toml..."<<std::endl;
+			maTrajectoire << "size = " << size << std::endl;
+			maTrajectoire << "trajectoire = {" ;
+			for (int i=0; i < size; ++i)
+			{
+				maTrajectoire <<i<< "=[" << etapes[i].first << "," << etapes[i].second << "],";
+			}
+			maTrajectoire << "}"<< std::endl;
+			
+		}
+	else {
+		std::cout << "ERREUR: Impossible d'ouvrir le fichier." << std::endl;
 	}
 }
 
