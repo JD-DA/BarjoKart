@@ -22,7 +22,7 @@ void Trajectoire::load_data(){
 	maxAcceleration = img->maxAcceleration;
 	std::cout<<"Chargement des données de la trajectoire..."<<std::endl;
 	std::cout<<" x "<<departureX<<" y "<<departureY<<" maxAcceleration "<<maxAcceleration<<std::endl;
-	etapes.insert(std::pair<int,std::pair<int,int>>(0,std::pair<int,int>(departureX,departureY)));
+	etapes.insert(std::pair<int,std::pair<int,int>>(0,std::pair<int,int>(0,0)));
 	size=1;
 
 	for (int i=0; i < size; ++i)
@@ -62,7 +62,17 @@ bool Trajectoire::verifier_trajectoire(){
 	for (int i = 1; i < size; ++i)
 	{
 		//std::cout<<"Pour "<<i<<" : ";
-		//std::list<int> traj = traceSegment(etapes[i-1].first,etapes[i-1].second,etapes[i].first,etapes[i].second);
+
+		if(manhattan(etapes[i].first-etapes[i-1].first,etapes[i].second-etapes[i-1].second)> maxAcceleration){
+			std::cout<<"On a fait un tonneau..."<<std::endl;
+			return false;
+		}
+
+		int xSuivant = departureX+etapes[i].first;
+		int ySuivant= departureY+etapes[i].second;
+		std::list<int> traj = traceSegment(departureX,departureY,xSuivant,ySuivant);
+		departureX=xSuivant;
+		departureY=ySuivant;
 		//std::cout<<"On a calculé la droite entre "<<etapes[i-1].first<<" "<<etapes[i-1].second<<" et "<<etapes[i].first<<" "<<etapes[i].second<<std::endl;
 		//verification des pixels
 		for (std::list<int>::iterator it = traj.begin(); it != traj.end(); ++it){
@@ -78,13 +88,10 @@ bool Trajectoire::verifier_trajectoire(){
 		std::cout<<"  On a verifié les pixels "<<std::endl;
 		//verification acceleration
 
-		if(manhattan(etapes[i].first-etapes[i-1].first,etapes[i].second-etapes[i-1].second)> maxAcceleration){
-			std::cout<<"On a fait un tonneau..."<<std::endl;
-			return false;
-		}
+		
 		std::cout<<"On a passé manhattan "<<std::endl;	
 	}
-	if(img->verifierArrivee(etapes[size-1].first,etapes[size-1].second)){
+	if(img->verifierArrivee(departureX,departureY)){
 		std::cout<<"On est arrivé !"<<std::endl;
 		return true;
 	}
