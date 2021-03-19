@@ -15,10 +15,10 @@ mem : main
 	valgrind --leak-check=full ./$<
 
 main : $(OBJ)
-	g++ --std=c++17 -Wall -Wextra -pedantic -ggdb -o $@  $^	`libpng-config --ldflags`
+	g++ --std=c++17 -fsanitize=address -Wall -Wextra -pedantic -ggdb -o $@  $^	`libpng-config --ldflags`
 
 %.o: %.cpp
-	g++ --std=c++17 -Wall -Wextra -pedantic -ggdb -o $@ -c  $< `libpng-config --cflags`
+	g++ --std=c++17 -fsanitize=address -Wall -Wextra -pedantic -ggdb -o $@ -c  $< `libpng-config --cflags`
 
 .PHONY : clean
 

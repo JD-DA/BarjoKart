@@ -22,8 +22,8 @@ void Trajectoire::load_data(){
 	maxAcceleration = img->maxAcceleration;
 	std::cout<<"Chargement des données de la trajectoire..."<<std::endl;
 	std::cout<<" x "<<departureX<<" y "<<departureY<<" maxAcceleration "<<maxAcceleration<<std::endl;
-	etapes.insert(std::pair<int,std::pair<int,int>>(0,std::pair<int,int>(0,0)));
-	size=1;
+	//etapes.insert(std::pair<int,std::pair<int,int>>(0,std::pair<int,int>(0,0)));
+	size=0;
 
 	for (int i=0; i < size; ++i)
 			{
@@ -101,6 +101,23 @@ bool Trajectoire::verifier_trajectoire(){
 
 int Trajectoire::manhattan(int x, int y){
 	return abs(x) + abs(y);
+}
+
+bool Trajectoire::verifierSegment(int xd ,int yd ,int xa ,int ya){
+    if(not(img->verifierPixel(xa,ya))){
+        return false;
+    }
+    std::list<int> traj = traceSegment(xd,yd,xa,ya);
+    
+    for (std::list<int>::iterator it = traj.begin(); it != traj.end(); ++it){
+        int x=(*it);
+        it++;
+        int y=(*it);
+        if(not(img->verifierPixel(x,y))){
+            return false;
+        }
+    }
+    return true;
 }
 
 void Trajectoire::load(std::string ftoml){
@@ -482,11 +499,42 @@ std::list<int> Trajectoire::traceSegment(int x1, int y1, int x2, int y2){
 	return liste;
 }
 
-void Trajectoire::write(std::string fichier){
-std::ofstream maTrajectoire(fichier);
+void Trajectoire::write(std::string nfichier){
+
+    std::ofstream f_sortie(nfichier, std::ios::out | std::ios::binary);
+    FILE* fichier = NULL;
+ 
+    fichier = fopen(nfichier.c_str(), "w");
+ 
+    if (fichier != NULL)
+    {
+        
+        fprintf(fichier, "size = %d\n", size);
+        fprintf(fichier, "trajectoire = {");
+
+            for (int i=0; i < size; ++i)
+            {
+                fprintf(fichier, "%d=[%d,%d],", i,etapes[i].first,etapes[i].second);
+            }
+            fprintf(fichier, "}\n");
+        fclose(fichier);
+    }}
 
 
-	if(maTrajectoire)  //On teste si tout est OK
+void Trajectoire::writeServeur(std::string nom_fichier_sortie){
+
+    std::ofstream f_sortie(nom_fichier_sortie, std::ios::out | std::ios::binary);
+    
+    for (int i=0; i < size; ++i)
+    {
+        f_sortie.write((char *) &(etapes[i].first), sizeof(int));
+        f_sortie.write((char *) &(etapes[i].second), sizeof(int));
+    }
+    f_sortie.close();
+        //std::ofstream maTrajectoire(fichier);
+
+
+	/*if(maTrajectoire)  //On teste si tout est OK
 		{std::cout<<"Ecriture du toml..."<<std::endl;
 			maTrajectoire << "size = " << size << std::endl;
 			maTrajectoire << "trajectoire = {" ;
@@ -499,8 +547,67 @@ std::ofstream maTrajectoire(fichier);
 		}
 	else {
 		std::cout << "ERREUR: Impossible d'ouvrir le fichier." << std::endl;
-	}
+	}*/
+    //maTrajectoire.close();
 }
+
+
+/*void Trajectoire::dijkstra(){
+
+}*/
+
+
+bool Trajectoire::verifierTrajectoireArrivee(std::pair<int,int> depart,std::pair<int,int> etape){
+        int xa=depart.first+etape.first;
+        int ya=depart.second+etape.second;
+
+        if(img->verifierArrivee(xa,ya)){
+            std::cout<<"On est arrivé directement sur l'arrivée !"<<std::endl;
+            return true;
+        }
+        std::list<int> traj = traceSegment(depart.first,depart.second,xa,ya);
+        //std::cout<<"On a calculé la droite entre "<<etapes[i-1].first<<" "<<etapes[i-1].second<<" et "<<etapes[i].first<<" "<<etapes[i].second<<std::endl;
+        //verification des pixels
+        
+        
+        for (std::list<int>::iterator it = traj.begin(); it != traj.end(); ++it){
+            int x=(*it);
+            it++;
+            int y=(*it);
+            if(img->verifierArrivee(x,y)){
+                std::cout<<"On est passé par l'arrivé !"<<std::endl;
+                return true;
+            }
+            //std::cout<<(*it)[0]<<' '<<(*it)[1]<<std::endl;
+        }
+        return false;
+
+}
+
+void Trajectoire::inserer(std::pair<int,std::pair<int,int>> paire){
+    //std::cout<<"Inserer reçoit : "<<paire.first<<" -> "<<paire.second.first<<" "<<paire.second.second<<" size : "<<size<<std::endl;
+    etapes.insert(paire);
+    ++size;
+    /*for (int i=0; i < size; ++i)
+            {
+                std::cout << "[" << etapes[i].first << "," << etapes[i].second << "],";
+            }
+            std::cout << "]"<< std::endl;*/
+}
+
+
+
+int Trajectoire::distanceMiniArrivee(int x,int y){
+    int dMin=img->height*2;
+
+    for (std::list<std::pair<int,int>>::iterator i = img->zoneArrive.begin(); i != img->zoneArrive.end(); ++i)
+    {
+        if(verifierSegment(x,y,(*i).first,(*i).second)){
+            dMin = std::min(dMin,manhattan(x-(*i).first,y-(*i).second));
+        }
+    }
+    return dMin;
+} 
 
 
 

@@ -1,5 +1,8 @@
 #include <iostream>
 #include <string>
+#include <list>
+#include <map>
+
 #ifndef IMAGE_H
 #define IMAGE_H
 
@@ -12,6 +15,8 @@ public:
 	//un tableau de lignes de caracteres representant les différenttes lignes de pixel
 	// pixel blanc=b pixel noir=n pixel d'une couleur bizarre=g et pixel de la couleur d'arrivée comme définie dans le toml=a
 	char** matrice; 
+	int** distanceObstacle;
+	std::list<std::pair<int,int>> zoneArrive;
 
 	int departureX;
 	int departureY;
@@ -25,9 +30,16 @@ public:
 	void build_image(std::string);
 	void load_data(std::string,std::string);
 	void affichage(char*);
+	void affichageDirection(const char*,int,int);
 	bool verifierPixel(int,int);
 	bool verifierArrivee(int,int);
+
+	int distanceMiniArrivee(int,int);
 	virtual ~Image();
+
+	std::map<std::string,int> direction(int,int);
+	int potentiel(std::string,int,int);
+	int indiceDirection(int,int);
 };
 
 

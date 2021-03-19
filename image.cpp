@@ -12,11 +12,15 @@ Image::Image(){
 }
 
 Image::~Image(){
-	for (int i = 0; i < height; ++i)
+	/*for (int i = 0; i < height; ++i)
 	{
 		delete(matrice[i]);
 	}
-	delete(matrice);
+	delete(matrice);*/
+	/*for (std::list<std::pair<int,int>>::iterator i = zoneArrive.begin(); i != zoneArrive.end(); ++i)
+	{
+		delete(i);
+	}*/
 }
 
 void Image::build_image(std::string fichier){
@@ -24,6 +28,8 @@ void Image::build_image(std::string fichier){
 	std::cout<<fichier<<std::endl;
 
 	png::image< png::rgba_pixel > image(fichier);
+
+	int nbPixelArrive=0;
 
 	this->width=image.get_width();
 	this->height=image.get_height();
@@ -49,6 +55,8 @@ void Image::build_image(std::string fichier){
 					//putchar(' ');
 				}else if(r==arrivalColorR and g==arrivalColorG and b==arrivalColorB){
 					this->matrice[i][j]='a';
+					nbPixelArrive++;
+					zoneArrive.push_back(std::pair<int,int>(i,j));
 					//putchar('a');
 				}else if(r==0 and g==0 and b==0){
 					//std::cout<<"000 Vrai"<<std::endl;
@@ -80,6 +88,8 @@ void Image::build_image(std::string fichier){
 			//putchar('\n');	
 		}
 		std::cout<<"Image contruite !"<<std::endl;
+		std::cout<<"Nb de pixel de la zone d'arrivée : "<<nbPixelArrive<<std::endl;
+		std::cout<<"Taille de la liste : "<<zoneArrive.size()<<std::endl;
 }
 
 void Image::load_data(std::string fpng,std::string ftoml){
@@ -121,18 +131,124 @@ if(fichier!=NULL){
 	fprintf(fichier, "%d\n", height);
 	fprintf(fichier, "%d\n", 255);
 std::cout<<"Écriture PGM..."<<std::endl;
+
+	
+	int x=departureX;
+	int y=departureY;
+	//float diff = y-x;
+
 	int num;
-	for(int i=0; i<width;i++){
-		for(int j=0;j<height;j++){
+	for(int i=0; i<height;i++){
+		for(int j=0;j<width;j++){
 			char cara =matrice[i][j];
 			if(cara=='b'){
+				
+				/*if(i<2*(j)+(y-2*x)){
+					if(i>-0.5*j+(y+0.5*x)){
+						if(i>0.5*j+(y-0.5*x)){
+							num = 200;
+						}else{
+							num = 150;
+						}
+					}else{
+						if(i>-2*j+(y+2*x)){
+							num = 100;
+						}else{
+							num = 50;
+						}
+					}
+				}else{
+					if(i>-0.5*j+(y+0.5*x)){
+						if(i>-2*j+(y+2*x)){
+							num = 250;
+						}else{
+							num = 200;
+						}
+					}else{
+						if(i>0.5*j+(y-0.5*x)){
+							num = 150;
+						}else{
+							num = 100;
+						}
+					}
+				}*/
 				num = 255;
+				
 			}else if(cara=='n'){
 				num = 0;
 			}else if (cara=='a'){
-				num = 200;
+				num = 50;
 			}else{
-				std::cout<<"Charactère bizarre : i="<<i<<" j="<<j<<std::endl;
+				//std::cout<<"Charactère bizarre : i="<<i<<" j="<<j<<std::endl;
+				num = 100;
+			}
+			fprintf(fichier, "%d ", num);
+		}
+		//putchar('\n');
+	}
+	fclose(fichier);
+	std::cout<<"L'image a été écrite, allez voir :"<<fichierSortie<<std::endl;
+}
+else{
+	std::cout<<"Erreur d'ouverture du fichier"<<std::endl;
+}
+}
+
+void Image::affichageDirection(const char* fichierSortie, int x,int y){
+FILE* fichier = fopen(fichierSortie,"w");
+if(fichier!=NULL){
+	fputs("P2",fichier);
+	fputs("\n",fichier);
+	fprintf(fichier, "# image générée par Image::affichage\n");
+	fprintf(fichier, "%d\t", width);
+	fprintf(fichier, "%d\n", height);
+	fprintf(fichier, "%d\n", 255);
+std::cout<<"Écriture PGM..."<<std::endl;
+
+	
+	int num;
+	for(int i=0; i<height;i++){
+		for(int j=0;j<width;j++){
+			char cara =matrice[i][j];
+			if(cara=='b'){
+				
+				if(i<2*(j)+(y-2*x)){
+					if(i>-0.5*j+(y+0.5*x)){
+						if(i>0.5*j+(y-0.5*x)){
+							num = 200;
+						}else{
+							num = 150;
+						}
+					}else{
+						if(i>-2*j+(y+2*x)){
+							num = 100;
+						}else{
+							num = 50;
+						}
+					}
+				}else{
+					if(i>-0.5*j+(y+0.5*x)){
+						if(i>-2*j+(y+2*x)){
+							num = 250;
+						}else{
+							num = 200;
+						}
+					}else{
+						if(i>0.5*j+(y-0.5*x)){
+							num = 150;
+						}else{
+							num = 100;
+						}
+					}
+				}
+				//num = 255;
+				
+			}else if(cara=='n'){
+				num = 0;
+			}else if (cara=='a'){
+				num = 50;
+			}else{
+				//std::cout<<"Charactère bizarre : i="<<i<<" j="<<j<<std::endl;
 				num = 100;
 			}
 			fprintf(fichier, "%d ", num);
@@ -148,11 +264,217 @@ else{
 }
 
 bool Image::verifierPixel(int x,int y){
-	std::cout<<x-1<<';'<<y-1<<' '<<matrice[y-1][x-1];
+	//std::cout<<x-1<<';'<<y-1<<' '<<matrice[y-1][x-1];
 	return matrice[y-1][x-1]!='n';
 }
 
 bool Image::verifierArrivee(int x,int y){
 	return matrice[y-1][x-1]=='a';
 }
+
+/*void Image::calculDistance(){
+
+}*/
+
+/*void Image::InitialiserDistance(){
+	this->distanceObstacle = new int*[height];
+	for (int i = 0; i < height; ++i)
+	{
+		distanceObstacle[i]= new int[width]
+	}
+}*/
+
+
+std::map<std::string,int> Image::direction(int x,int y){
+	std::map<std::string,int> map;
+	int n = 0;
+	map.insert(std::pair<std::string,int>("n",0));
+	map.insert(std::pair<std::string,int>("e",0));
+	map.insert(std::pair<std::string,int>("s",0));
+	map.insert(std::pair<std::string,int>("o",0));
+	map.insert(std::pair<std::string,int>("ne",0));
+	map.insert(std::pair<std::string,int>("no",0));
+	map.insert(std::pair<std::string,int>("so",0));
+	map.insert(std::pair<std::string,int>("se",0));
+	int e = 0;
+	int s = 0;
+	int o = 0;
+	int ne = 0;
+	int no = 0;
+	int se = 0;
+	int so = 0;
+
+	//float diff = y-x;
+
+	for (std::list<std::pair<int,int>>::iterator it = zoneArrive.begin(); it != zoneArrive.end(); ++it)
+	{
+		int xa=(*it).second;
+		int ya=(*it).first;
+
+		if(ya<2*xa+(y-2*x)){
+			if(ya>-0.5*xa+(y+0.5*x)){
+				if(ya>0.5*xa+(y-0.5*x)){
+					++se;
+					map["se"]++;
+				}else{
+					++e;
+					map["e"]++;
+				}
+			}else{
+				if(ya>-2*xa+(y+2*x)){
+					++ne;
+					map["ne"]++;
+				}else{
+					++n;
+					map["n"]++;
+				}
+			}
+		}else{
+			if(ya>-0.5*xa+(y+0.5*x)){
+				if(ya>-2*xa+(y+2*x)){
+					++s;
+					map["s"]++;
+				}else{
+					++so;
+					map["so"]++;
+				}
+			}else{
+				if(ya>0.5*xa+(y-0.5*x)){
+					++o;
+					map["o"]++;
+				}else{
+					++no;
+					map["no"]++;
+				}
+			}
+		}
+			
+	}
+	std::cout<<"n "<<n<<" ne "<<ne<<" e "<<e<<" se "<<se<<" s "<<s<<" so "<<so<<" o "<<o<<" no "<<no<<std::endl;
+	/*for(auto it = map.cbegin(); it != map.cend(); ++it)
+{
+    std::cout << it->first << " " << it->second << "\n";
+}*/
+return map;
+
+
+}
+
+int Image::potentiel(std::string dir, int x,int y){
+	int pasX;
+	int pasY;
+
+	if(strcmp(dir.c_str(),"n")==0){
+			pasX=0;
+			pasY=-1;
+		}else if(strcmp(dir.c_str(),"no")==0){
+			pasX=-1;
+			pasY=-1;
+		}else if(strcmp(dir.c_str(),"o")==0){
+			pasX=-1;
+			pasY=0;
+		}else if(strcmp(dir.c_str(),"so")==0){
+			pasX=-1;
+			pasY=1;
+		}else if(strcmp(dir.c_str(),"s")==0){
+			pasX=0;
+			pasY=1;
+		}else if(strcmp(dir.c_str(),"se")==0){
+			pasX=1;
+			pasY=-1;
+		}else if(strcmp(dir.c_str(),"e")==0){
+			pasX=1;
+			pasY=0;
+		}else{ //ne
+			pasX=1;
+			pasY=-1;
+		}
+	int nbPasPotentiels = 0;
+	x+=pasX;
+	y+=pasY;
+	while(verifierPixel(x,y)){
+		nbPasPotentiels++;
+		x+=pasX;
+		y+=pasY;
+	}
+
+	return nbPasPotentiels;
+}
+
+
+/*int Image::indiceDirection(int x,int y){
+	std::map<std::string,int> map;
+	int n = 0;
+	map.insert(std::pair<std::string,int>("n",0));
+	map.insert(std::pair<std::string,int>("e",0));
+	map.insert(std::pair<std::string,int>("s",0));
+	map.insert(std::pair<std::string,int>("o",0));
+	map.insert(std::pair<std::string,int>("ne",0));
+	map.insert(std::pair<std::string,int>("no",0));
+	map.insert(std::pair<std::string,int>("so",0));
+	map.insert(std::pair<std::string,int>("se",0));
+	int e = 0;
+	int s = 0;
+	int o = 0;
+	int ne = 0;
+	int no = 0;
+	int se = 0;
+	int so = 0;
+
+	//float diff = y-x;
+
+	for (std::list<std::pair<int,int>>::iterator it = zoneArrive.begin(); it != zoneArrive.end(); ++it)
+	{
+		int xa=(*it).second;
+		int ya=(*it).first;
+
+		if(xa<){
+			if(ya>-0.5*xa+(y+0.5*x)){
+				if(ya>0.5*xa+(y-0.5*x)){
+					++se;
+					map["se"]++;
+				}else{
+					++e;
+					map["e"]++;
+				}
+			}else{
+				if(ya>-2*xa+(y+2*x)){
+					++ne;
+					map["ne"]++;
+				}else{
+					++n;
+					map["n"]++;
+				}
+			}
+		}else{
+			if(ya>-0.5*xa+(y+0.5*x)){
+				if(ya>-2*xa+(y+2*x)){
+					++s;
+					map["s"]++;
+				}else{
+					++so;
+					map["so"]++;
+				}
+			}else{
+				if(ya>0.5*xa+(y-0.5*x)){
+					++o;
+					map["o"]++;
+				}else{
+					++no;
+					map["no"]++;
+				}
+			}
+		}
+			
+	}
+	std::cout<<"n "<<n<<" ne "<<ne<<" e "<<e<<" se "<<se<<" s "<<s<<" so "<<so<<" o "<<o<<" no "<<no<<std::endl;
+	
+	return map;
+}*/
+
+
+
+
+
+
 
