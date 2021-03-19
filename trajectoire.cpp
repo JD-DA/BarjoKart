@@ -104,7 +104,7 @@ int Trajectoire::manhattan(int x, int y){
 }
 
 bool Trajectoire::verifierSegment(int xd ,int yd ,int xa ,int ya){
-    if(not(img->verifierPixel(xa,ya))){
+    if(not(img->verifierPixel2(xa,ya))){
         return false;
     }
     std::list<int> traj = traceSegment(xd,yd,xa,ya);
@@ -113,7 +113,7 @@ bool Trajectoire::verifierSegment(int xd ,int yd ,int xa ,int ya){
         int x=(*it);
         it++;
         int y=(*it);
-        if(not(img->verifierPixel(x,y))){
+        if(not(img->verifierPixel2(x,y))){
             return false;
         }
     }

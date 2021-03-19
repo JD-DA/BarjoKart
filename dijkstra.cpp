@@ -126,7 +126,7 @@ void Dijkstra::createGraph(){
 				//G[0]=vector<pair<int, int>>(8);
 				cout<<" "<<0;
 			}else{
-				if(img->verifierPixel(j,i)){
+				if(img->verifierPixel2(j,i)){
 					cout<<" "<<indexNoeud;
 					//G[indexNoeud]=vector<pair<int, int>>(8);
 					coordonnees.insert(pair<int,pair<int,int>>(indexNoeud,pair<int,int>(j,i)));
@@ -320,13 +320,13 @@ void Dijkstra::chercherNoeudArrive(){
 	for (std::map<int,pair<int,int>>::iterator i = coor.begin(); i != coor.end(); ++i)
 	{
 
-		if(img->verifierArrivee((*i).second.first,(*i).second.second)){
+		if(img->verifierArrivee2((*i).second.first,(*i).second.second)){
 			ndMax= (*i).first;
 			cout<<"break !"<<endl;
 			this->noeudDansArrivee=true;
 			break;
 		}
-		distanceRes = traj->distanceMiniArrivee((*i).second.first,(*i).second.second);
+		/*distanceRes = traj->distanceMiniArrivee((*i).second.first,(*i).second.second);
 		
 		//cout<<(*i).first<<" "<<distanceRes<<endl;
 
@@ -334,7 +334,7 @@ void Dijkstra::chercherNoeudArrive(){
 			//cout<<"Maj du noeud : "<<ndMax<<' '<<distanceRes<<endl;
 			ndMax = (*i).first;
 			distanceMini = distanceRes;
-		}
+		}*/
 	}
 
 	cout<<"Le noeud le plus proche : "<<ndMax<<endl;

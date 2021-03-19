@@ -32,7 +32,9 @@ public:
 	void affichage(char*);
 	void affichageDirection(const char*,int,int);
 	bool verifierPixel(int,int);
+	bool verifierPixel2(int,int);
 	bool verifierArrivee(int,int);
+	bool verifierArrivee2(int,int);
 
 	int distanceMiniArrivee(int,int);
 	virtual ~Image();

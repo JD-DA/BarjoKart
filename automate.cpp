@@ -94,7 +94,7 @@ std::pair<int,int> Automate::uncoup(){
 		int v2potentiel=img->potentiel(voisins.second,xCourant,yCourant);
 		//on test la direction voisines qui compte le plus de pixel d'arrivé
 
-		//std::cout<<"Les directions voisines leurs nbPixel et potentiel: "<<voisins.first<<' '<<map[voisins.first]<<' '<<v1potentiel<<' '<<voisins.second<<' '<<map[voisins.second]<<' '<<v2potentiel<<std::endl;
+		std::cout<<"Les directions voisines leurs nbPixel et potentiel: "<<voisins.first<<' '<<map[voisins.first]<<' '<<v1potentiel<<' '<<voisins.second<<' '<<map[voisins.second]<<' '<<v2potentiel<<std::endl;
 		if(strcmp(voisins.first.c_str(),directionInterdite.c_str())==0){
 			if(v2potentiel>15){
 				dir=voisins.second;

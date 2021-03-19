@@ -268,9 +268,19 @@ bool Image::verifierPixel(int x,int y){
 	return matrice[y-1][x-1]!='n';
 }
 
+bool Image::verifierPixel2(int x,int y){
+	//std::cout<<x<<';'<<y<<' '<<matrice[y][x];
+	return matrice[y][x]!='n';
+}
+
 bool Image::verifierArrivee(int x,int y){
 	return matrice[y-1][x-1]=='a';
 }
+
+bool Image::verifierArrivee2(int x,int y){
+	return matrice[y][x]=='a';
+}
+
 
 /*void Image::calculDistance(){
 

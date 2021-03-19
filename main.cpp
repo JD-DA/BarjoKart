@@ -15,9 +15,9 @@ int main(){
 	Image img = Image();
 	
 	
-	//img.load_data("circuits/circuit0.png","circuits/circuit0.toml");
-	img.load_data("circuits/fusee.png","circuits/fusee.toml");
-	img.affichage("image.pgm");
+	img.load_data("circuits/circuit0.png","circuits/circuit0.toml");
+	//img.load_data("circuits/fusee.png","circuits/fusee.toml");
+	//img.affichage("image.pgm");
 	//img.load_data("circuits/trois_quatorze.png","circuits/trois_quatorze.toml");
 	Trajectoire tr = Trajectoire(&img);
 	Dijkstra dij = Dijkstra(&img,&tr);
@@ -27,8 +27,8 @@ int main(){
 	//std::cout<<dij.noeudArrivee<<std::endl;
 	dij.transformer();
 
-	//tr.writeServeur("circuit3.txt");
-	//tr.write("circuit1.toml");
+	tr.writeServeur("314.txt");
+	tr.write("314humain.toml");
 
 	//Automate aut = Automate(&img,&tr);
 	//aut.machine();
