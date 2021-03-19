@@ -6,7 +6,10 @@
 
 using namespace std;
 
-//faire un define pour le chemin de la création du fichier
+
+int Trajectoire::manhattan(int x, int y){
+	return abs(x) + abs(y);
+}
 
 
 int main(){
