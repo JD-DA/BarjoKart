@@ -15,8 +15,8 @@ int main(){
 	Image img = Image();
 	
 	
-	img.load_data("circuits/circuit0.png","circuits/circuit0.toml");
-	//img.load_data("circuits/fusee.png","circuits/fusee.toml");
+	 //img.load_data("circuits/circuit0.png","circuits/circuit0.toml");
+	img.load_data("circuits/fusee.png","circuits/fusee.toml");
 	//img.affichage("image.pgm");
 	//img.load_data("circuits/trois_quatorze.png","circuits/trois_quatorze.toml");
 	Trajectoire tr = Trajectoire(&img);
@@ -24,15 +24,32 @@ int main(){
 	dij.createGraph();
 	dij.chercherNoeudArrive();
 	dij.algoDijkstra();
-	//std::cout<<dij.noeudArrivee<<std::endl;
+	std::cout<<dij.noeudArrivee<<std::endl;
+
 	dij.transformer();
+	
+	if(not(dij.noeudDansArrivee)){
+		std::cout<<"On est presque arrivé ! \n\n";
+		Automate aut = Automate(&img,&tr);
+		aut.xCourant=dij.coor[dij.noeudArrivee].first;
+		aut.yCourant=dij.coor[dij.noeudArrivee].second;
+		std::cout<<"avant-dernieres coordonnées : x/y "<<aut.xCourant<<' '<<aut.yCourant<<std::endl;
+		std::pair<int,int> laPaire = (aut.coupFinal());
+		std::cout<<"Dernire etape : x/y "<<laPaire.first<<' '<<laPaire.second<<" Size : "<<tr.etapes.size()<<std::endl;
+		int indice = (tr.etapes.size())+1;
+		tr.inserer(std::pair<int,std::pair<int,int>>(indice,laPaire));
 
-	tr.writeServeur("314.txt");
-	tr.write("314humain.toml");
+	}
 
-	//Automate aut = Automate(&img,&tr);
+	tr.afficher();
+	
+
+	tr.writeServeur("fusee3.txt");
+	tr.write("test21marsFusee.toml");
+
+	
 	//aut.machine();
-	//tr.write("sortie.toml");
+	//tr.write("testSamediSoir.toml");
 
 	
 

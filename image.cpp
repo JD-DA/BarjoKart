@@ -52,16 +52,16 @@ void Image::build_image(std::string fichier){
 				//std::cout<<r<<' '<<g<<' '<<b<<std::endl;
 				if((r==255 and g==255 and b==255)){
 					this->matrice[i][j]='b';
-					//putchar(' ');
+					putchar(' ');
 				}else if(r==arrivalColorR and g==arrivalColorG and b==arrivalColorB){
 					this->matrice[i][j]='a';
 					nbPixelArrive++;
 					zoneArrive.push_back(std::pair<int,int>(i,j));
-					//putchar('a');
+					putchar('a');
 				}else if(r==0 and g==0 and b==0){
 					//std::cout<<"000 Vrai"<<std::endl;
 					this->matrice[i][j]='n';
-					//putchar('n');
+					putchar('n');
 				}else{
 					/*test=false;
 					for (int v = 0; v < size; ++v)
@@ -81,11 +81,11 @@ void Image::build_image(std::string fichier){
 						size++;
 					}*/
 					this->matrice[i][j]='g';
-					//putchar('g');
+					putchar('g');
 				}
 
 			}
-			//putchar('\n');	
+			putchar('\n');	
 		}
 		std::cout<<"Image contruite !"<<std::endl;
 		std::cout<<"Nb de pixel de la zone d'arrivée : "<<nbPixelArrive<<std::endl;
@@ -269,7 +269,9 @@ bool Image::verifierPixel(int x,int y){
 }
 
 bool Image::verifierPixel2(int x,int y){
-	//std::cout<<x<<';'<<y<<' '<<matrice[y][x];
+	std::cout<<' '<<matrice[y][x];
+	//if(matrice[y][x]!='b'){
+	//	std::cout<<' '<<matrice[y][x];}
 	return matrice[y][x]!='n';
 }
 
@@ -278,7 +280,20 @@ bool Image::verifierArrivee(int x,int y){
 }
 
 bool Image::verifierArrivee2(int x,int y){
+	std::cout<<"verifierArrivee2 x/y : "<<x<<' '<<y<<" = "<<matrice[y][x]<<std::endl;
 	return matrice[y][x]=='a';
+}
+/**
+* renvoi une paire de coordonnées de type y/x (origine en haut à gauche)
+**/
+std::pair<int,int> Image::centreZoneArrivee(){
+	std::list<std::pair<int,int>>::iterator i = zoneArrive.begin();
+	int res=0;
+	while(res<zoneArrive.size()/2){
+		i++;
+		res++;
+	}
+	return (*i);
 }
 
 
@@ -402,7 +417,7 @@ int Image::potentiel(std::string dir, int x,int y){
 	int nbPasPotentiels = 0;
 	x+=pasX;
 	y+=pasY;
-	while(verifierPixel(x,y)){
+	while(verifierPixel2(x,y)){
 		nbPasPotentiels++;
 		x+=pasX;
 		y+=pasY;

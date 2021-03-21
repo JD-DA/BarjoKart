@@ -23,6 +23,7 @@ public:
 	std::pair<int,int> uncoup();
 	void machine();
 	std::string inverse(std::string);
+	std::pair<int,int> coupFinal();
 };
 
 #endif

@@ -35,6 +35,7 @@ public:
 	bool verifierPixel2(int,int);
 	bool verifierArrivee(int,int);
 	bool verifierArrivee2(int,int);
+	std::pair<int,int> centreZoneArrivee();
 
 	int distanceMiniArrivee(int,int);
 	virtual ~Image();

@@ -104,6 +104,7 @@ int Trajectoire::manhattan(int x, int y){
 }
 
 bool Trajectoire::verifierSegment(int xd ,int yd ,int xa ,int ya){
+    std::cout<<"On verifie entre xd/yd "<<xd<<'/'<<yd<<" et xa/ya"<<xa<<' '<<ya<<std::endl;
     if(not(img->verifierPixel2(xa,ya))){
         return false;
     }
@@ -113,10 +114,14 @@ bool Trajectoire::verifierSegment(int xd ,int yd ,int xa ,int ya){
         int x=(*it);
         it++;
         int y=(*it);
-        if(not(img->verifierPixel2(x,y))){
+        bool test = (img->verifierPixel2(x,y));
+        //std::cout<<' '<<test<<' ';
+        if(not(test)){
+            std::cout<<std::endl;
             return false;
         }
     }
+    std::cout<<std::endl;
     return true;
 }
 
@@ -512,10 +517,12 @@ void Trajectoire::write(std::string nfichier){
         fprintf(fichier, "size = %d\n", size);
         fprintf(fichier, "trajectoire = {");
 
-            for (int i=0; i < size; ++i)
+
+            for (std::map<int,std::pair<int,int>>::iterator i = etapes.begin(); i != etapes.end(); ++i)
             {
-                fprintf(fichier, "%d=[%d,%d],", i,etapes[i].first,etapes[i].second);
+                fprintf(fichier, "%d=[%d,%d],", (*i).first,(*i).second.first,(*i).second.second);
             }
+            
             fprintf(fichier, "}\n");
         fclose(fichier);
     }}
@@ -525,11 +532,12 @@ void Trajectoire::writeServeur(std::string nom_fichier_sortie){
 
     std::ofstream f_sortie(nom_fichier_sortie, std::ios::out | std::ios::binary);
     
-    for (int i=0; i < size; ++i)
+    for (std::map<int,std::pair<int,int>>::iterator i = etapes.begin(); i != etapes.end(); ++i)
     {
-        f_sortie.write((char *) &(etapes[i].first), sizeof(int));
-        f_sortie.write((char *) &(etapes[i].second), sizeof(int));
+        f_sortie.write((char *) &((*i).second.first), sizeof(int));
+        f_sortie.write((char *) &((*i).second.second), sizeof(int));
     }
+    
     f_sortie.close();
         //std::ofstream maTrajectoire(fichier);
 
@@ -586,30 +594,65 @@ bool Trajectoire::verifierTrajectoireArrivee(std::pair<int,int> depart,std::pair
 
 void Trajectoire::inserer(std::pair<int,std::pair<int,int>> paire){
     //std::cout<<"Inserer reçoit : "<<paire.first<<" -> "<<paire.second.first<<" "<<paire.second.second<<" size : "<<size<<std::endl;
-    etapes.insert(paire);
-    ++size;
-    /*for (int i=0; i < size; ++i)
-            {
-                std::cout << "[" << etapes[i].first << "," << etapes[i].second << "],";
-            }
-            std::cout << "]"<< std::endl;*/
+    std::cout<<"Avant"<<std::endl;
+    std::cout<<"size : "<<size<<std::endl;
+    for (std::map<int,std::pair<int,int>>::iterator i = etapes.begin(); i != etapes.end(); ++i)
+    {
+        std::cout <<(*i).first<< " : [" << (*i).second.first << "," << (*i).second.second << "],";
+    }
+    std::cout << "]"<< std::endl;
+    std::pair<std::map<int,std::pair<int,int>>::iterator,bool> res = etapes.insert(paire);
+
+    if(not(res.second)){
+        std::cout<<"Erreur lors de l'insertion"<<std::endl;
+    }else{
+        ++size;
+    }
+
+    std::cout<<"Après"<<std::endl;
+    std::cout<<"size : "<<size<<std::endl;
+    for (std::map<int,std::pair<int,int>>::iterator i = etapes.begin(); i != etapes.end(); ++i)
+    {
+        std::cout <<(*i).first<< " : [" << (*i).second.first << "," << (*i).second.second << "],";
+    }
+    std::cout << "]"<< std::endl;
 }
 
 
 
 int Trajectoire::distanceMiniArrivee(int x,int y){
     int dMin=img->height*2;
+    int tt=0;
+    int succes=0;
 
-    for (std::list<std::pair<int,int>>::iterator i = img->zoneArrive.begin(); i != img->zoneArrive.end(); ++i)
+    /*for (std::list<std::pair<int,int>>::iterator i = img->zoneArrive.begin(); i != img->zoneArrive.end(); ++i)
     {
+        tt++;
         if(verifierSegment(x,y,(*i).first,(*i).second)){
+            succes++;
             dMin = std::min(dMin,manhattan(x-(*i).first,y-(*i).second));
         }
     }
+    if(((float) succes/ (float) tt)>0.5){
+        return img->height*2;
+    }*/
+    std::pair<int,int> arrive = img->centreZoneArrivee();
+    if(verifierSegment(x,y,arrive.second,arrive.first)){
+            //succes++;
+            //dMin = std::min(dMin,manhattan(x-(*i).first,y-(*i).second));
+            return manhattan(x-(arrive.second),y-(arrive.first));
+        }
     return dMin;
+
+
 } 
 
-
+void Trajectoire::afficher(){
+    for (std::map<int,std::pair<int,int>>::iterator i = etapes.begin(); i != etapes.end(); ++i)
+    {
+        std::cout <<(*i).first<< " : [" << (*i).second.first << "," << (*i).second.second << "],";
+    }
+}
 
 
 

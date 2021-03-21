@@ -28,6 +28,7 @@ public:
 	void load_data();
 	bool verifierSegment(int,int,int,int);
 	int distanceMiniArrivee(int x,int y);
+	void afficher();
 
 	void write(std::string);
 	void writeServeur(std::string);

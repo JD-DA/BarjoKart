@@ -26,7 +26,7 @@ std::pair<int,int> Automate::uncoup(){
 	std::map<std::string,int> map = img->direction(xCourant,yCourant);
 	etapeDouble=false;
 	
-	std::string directionInterdite = inverse(precedenteDirection);
+	//std::string directionInterdite = inverse(precedenteDirection);
 	for (std::map<std::string,int>::iterator i = map.begin(); i != map.end(); ++i)
 		{
 			std::cout<<"["<<(*i).first<<";"<<(*i).second<<'],';
@@ -34,8 +34,8 @@ std::pair<int,int> Automate::uncoup(){
 
 		}
 		std::cout<<std::endl;
-	std::cout<<"Direction Intrdite : "<<directionInterdite<<std::endl;
-	map.erase(map.find(directionInterdite));
+	//std::cout<<"Direction Intrdite : "<<directionInterdite<<std::endl;
+	//map.erase(map.find(directionInterdite));
 	for (std::map<std::string,int>::iterator i = map.begin(); i != map.end(); ++i)
 		{
 			std::cout<<"["<<(*i).first<<";"<<(*i).second<<"],";
@@ -95,7 +95,7 @@ std::pair<int,int> Automate::uncoup(){
 		//on test la direction voisines qui compte le plus de pixel d'arrivé
 
 		std::cout<<"Les directions voisines leurs nbPixel et potentiel: "<<voisins.first<<' '<<map[voisins.first]<<' '<<v1potentiel<<' '<<voisins.second<<' '<<map[voisins.second]<<' '<<v2potentiel<<std::endl;
-		if(strcmp(voisins.first.c_str(),directionInterdite.c_str())==0){
+		/*if(strcmp(voisins.first.c_str(),directionInterdite.c_str())==0){
 			if(v2potentiel>15){
 				dir=voisins.second;
 				coupPotentiel=v2potentiel;
@@ -109,7 +109,7 @@ std::pair<int,int> Automate::uncoup(){
 			}else{
 				chercherParmiReste=true;
 			}
-		}else{
+		}else{*/
 			if(map[voisins.first]>map[voisins.second]){
 				if(v1potentiel>15){
 					dir=voisins.first;
@@ -131,7 +131,7 @@ std::pair<int,int> Automate::uncoup(){
 					chercherParmiReste=true;
 				}
 			}
-		}
+		//}
 		std::cout<<"donc, on a dir, pot : "<<dir<<' '<<coupPotentiel<<std::endl;
 	}
 	if (chercherParmiReste)
@@ -201,6 +201,59 @@ std::pair<int,int> Automate::uncoup(){
 	}else{
 		vitesse=coupPotentiel-1;
 	}
+	std::cout<<"La vitesse et sa direction : "<<vitesse<<" "<<dir<<std::endl;
+	precedenteDirection=dir;
+	if(strcmp(dir.c_str(),"n")==0){
+			return std::pair<int,int>(0,-vitesse);
+		}else if(strcmp(dir.c_str(),"no")==0){
+			return std::pair<int,int>(-vitesse/2,-vitesse/2);
+		}else if(strcmp(dir.c_str(),"o")==0){
+			return std::pair<int,int>(-vitesse,0);
+		}else if(strcmp(dir.c_str(),"so")==0){
+			return std::pair<int,int>(-vitesse/2,vitesse/2);
+		}else if(strcmp(dir.c_str(),"s")==0){
+			return std::pair<int,int>(0,vitesse);
+		}else if(strcmp(dir.c_str(),"se")==0){
+			return std::pair<int,int>(vitesse/2,vitesse/2);
+		}else if(strcmp(dir.c_str(),"e")==0){
+			return std::pair<int,int>(vitesse,0);
+		}else{ //ne
+			return std::pair<int,int>(vitesse/2,-vitesse/2);
+		}
+
+
+	
+}
+
+
+std::pair<int,int> Automate::coupFinal(){
+	std::cout<<"on lance le dernier coup !"<<std::endl;
+	std::cout<<" x courant : "<<xCourant<<" y courant : "<<yCourant<<std::endl;
+	std::map<std::string,int> map = img->direction(xCourant,yCourant);
+	etapeDouble=false;
+	
+	std::map<std::string,int> potentiel;
+	std::string dir;
+	int max=0;
+	bool chercherParmiReste=false;
+	for (std::map<std::string,int>::iterator i = map.begin(); i != map.end(); ++i)
+		{
+			//std::cout<<"Dir et nbdePixel "<<(*i).first<<" "<<(*i).second<<std::endl;
+			if(max<(*i).second){
+				dir=(*i).first;
+				max=(*i).second;
+			}
+
+		}
+	std::cout<<"On a trouvé la premiere direction : "<<dir<<std::endl;
+	int coupPotentiel = img->potentiel(dir,xCourant,yCourant);
+	std::cout<<"Son potentiel : "<<coupPotentiel<<std::endl;
+	
+	//on a notre direction, on va créer l'étape.
+	int vitesse;
+
+	vitesse=coupPotentiel;
+
 	std::cout<<"La vitesse et sa direction : "<<vitesse<<" "<<dir<<std::endl;
 	precedenteDirection=dir;
 	if(strcmp(dir.c_str(),"n")==0){
