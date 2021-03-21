@@ -16,9 +16,9 @@ int main(){
 	
 	
 	 //img.load_data("circuits/circuit0.png","circuits/circuit0.toml");
-	img.load_data("circuits/fusee.png","circuits/fusee.toml");
+	//img.load_data("circuits/fusee.png","circuits/fusee.toml");
 	//img.affichage("image.pgm");
-	//img.load_data("circuits/trois_quatorze.png","circuits/trois_quatorze.toml");
+	img.load_data("circuits/trois_quatorze.png","circuits/trois_quatorze.toml");
 	Trajectoire tr = Trajectoire(&img);
 	Dijkstra dij = Dijkstra(&img,&tr);
 	dij.createGraph();
@@ -44,8 +44,8 @@ int main(){
 	tr.afficher();
 	
 
-	tr.writeServeur("fusee3.txt");
-	tr.write("test21marsFusee.toml");
+	tr.writeServeur("pi21mars.txt");
+	tr.write("pi21mars.toml");
 
 	
 	//aut.machine();
