@@ -709,7 +709,7 @@ void Trajectoire::detaillerTrajectoire(){
     i++;
     while ( i != etapesGenerales.end())
     {
-        //etapesFines.push_back(std::pair<int,int>(0,0));
+        etapesFines.push_back(std::pair<int,int>(0,0));
         xf=(*i).first;
         yf=(*i).second;
         xmilieu=(xd+xf)/2.0;
