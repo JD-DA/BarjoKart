@@ -19,7 +19,11 @@ Automate::~Automate(){
 	
 }
 
-
+/**
+* A partir des coordonnées courantes, va renvoier une etape qui devrait permettre de nous rapprocher de l'arrivée. 
+* Chercher la direction vers laquelle aller, prend une direction voisine si le potentiel est faible ou bien celle qui a le plus de potentiel.
+* N'arrive pas a passer pi, le detour est trop grand pour qu'il ne comprenne quoi faire,
+**/
 std::pair<int,int> Automate::uncoup(){
 	std::cout<<"on Lance un coup !"<<std::endl;
 	std::cout<<" x courant : "<<xCourant<<" y courant : "<<yCourant<<std::endl;
@@ -95,21 +99,6 @@ std::pair<int,int> Automate::uncoup(){
 		//on test la direction voisines qui compte le plus de pixel d'arrivé
 
 		std::cout<<"Les directions voisines leurs nbPixel et potentiel: "<<voisins.first<<' '<<map[voisins.first]<<' '<<v1potentiel<<' '<<voisins.second<<' '<<map[voisins.second]<<' '<<v2potentiel<<std::endl;
-		/*if(strcmp(voisins.first.c_str(),directionInterdite.c_str())==0){
-			if(v2potentiel>15){
-				dir=voisins.second;
-				coupPotentiel=v2potentiel;
-			}else{
-				chercherParmiReste=true;
-			}
-		}else if(strcmp(voisins.second.c_str(),directionInterdite.c_str())==0){
-			if(v1potentiel>15){
-				dir=voisins.first;
-				coupPotentiel=v1potentiel;
-			}else{
-				chercherParmiReste=true;
-			}
-		}else{*/
 			if(map[voisins.first]>map[voisins.second]){
 				if(v1potentiel>15){
 					dir=voisins.first;
@@ -225,7 +214,7 @@ std::pair<int,int> Automate::uncoup(){
 	
 }
 
-
+//Utilisé pour aller directement dans la zone d'arrivée une fois qu'on est assez proche
 std::pair<int,int> Automate::coupFinal(){
 	std::cout<<"on lance le dernier coup !"<<std::endl;
 	std::cout<<" x courant : "<<xCourant<<" y courant : "<<yCourant<<std::endl;
@@ -278,6 +267,10 @@ std::pair<int,int> Automate::coupFinal(){
 	
 }
 
+/**
+* Fonction qui devait gérer unCoup(), relance un coup tant que l'on est pas arrivé.
+*
+**/
 void Automate::machine(){
 	//img.direction(img.departureX,img.departureY);
 	//img.affichage("image.pgm");
@@ -325,6 +318,7 @@ void Automate::machine(){
 
 }
 
+// Renvoie juste la direction inverse
 std::string Automate::inverse(std::string dir){
 	if(strcmp(dir.c_str(),"n")==0){
 			return std::string("s");
@@ -344,3 +338,4 @@ std::string Automate::inverse(std::string dir){
 			return std::string("so");
 		}
 }
+

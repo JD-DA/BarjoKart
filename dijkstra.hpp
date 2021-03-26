@@ -8,8 +8,11 @@
 #include <limits>
 #include "image.hpp"
 #include "trajectoire.hpp"
+
+
 #ifndef DIJKSTRA_H
 #define DIJKSTRA_H
+
 
 class Dijkstra{
 public:

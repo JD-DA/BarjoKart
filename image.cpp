@@ -12,11 +12,11 @@ Image::Image(){
 }
 
 Image::~Image(){
-	/*for (int i = 0; i < height; ++i)
+	/*for (int i = 0; i < this->height; i++)
 	{
 		delete(matrice[i]);
-	}
-	delete(matrice);*/
+	}*/
+	//delete(matrice);
 	/*for (std::list<std::pair<int,int>>::iterator i = zoneArrive.begin(); i != zoneArrive.end(); ++i)
 	{
 		delete(i);
@@ -269,7 +269,7 @@ bool Image::verifierPixel(int x,int y){
 }
 
 bool Image::verifierPixel2(int x,int y){
-	std::cout<<' '<<matrice[y][x];
+	//std::cout<<' '<<matrice[y][x];
 	//if(matrice[y][x]!='b'){
 	//	std::cout<<' '<<matrice[y][x];}
 	return matrice[y][x]!='n';
@@ -280,11 +280,11 @@ bool Image::verifierArrivee(int x,int y){
 }
 
 bool Image::verifierArrivee2(int x,int y){
-	std::cout<<"verifierArrivee2 x/y : "<<x<<' '<<y<<" = "<<matrice[y][x]<<std::endl;
+	//std::cout<<"verifierArrivee2 x/y : "<<x<<' '<<y<<" = "<<matrice[y][x]<<std::endl;
 	return matrice[y][x]=='a';
 }
 /**
-* renvoi une paire de coordonnées de type y/x (origine en haut à gauche)
+* renvoi une paire de coordonnées de type y/x  correspondant au centre de la zone d'arrivée(origine en haut à gauche)
 **/
 std::pair<int,int> Image::centreZoneArrivee(){
 	std::list<std::pair<int,int>>::iterator i = zoneArrive.begin();
@@ -297,19 +297,11 @@ std::pair<int,int> Image::centreZoneArrivee(){
 }
 
 
-/*void Image::calculDistance(){
 
-}*/
-
-/*void Image::InitialiserDistance(){
-	this->distanceObstacle = new int*[height];
-	for (int i = 0; i < height; ++i)
-	{
-		distanceObstacle[i]= new int[width]
-	}
-}*/
-
-
+/**
+* Pour un point donné, renvoie la direction vers laquelle se trouve le plus grand nombre de pixel qui composent la zone d'arrivée
+*
+**/
 std::map<std::string,int> Image::direction(int x,int y){
 	std::map<std::string,int> map;
 	int n = 0;
@@ -385,6 +377,10 @@ return map;
 
 }
 
+/**
+* Renvoi un int qui correpond au potentiel de ce point dans cette direction, c'est à dire la distance qui le sépare du prochain obstacle
+*
+**/
 int Image::potentiel(std::string dir, int x,int y){
 	int pasX;
 	int pasY;
@@ -425,81 +421,4 @@ int Image::potentiel(std::string dir, int x,int y){
 
 	return nbPasPotentiels;
 }
-
-
-/*int Image::indiceDirection(int x,int y){
-	std::map<std::string,int> map;
-	int n = 0;
-	map.insert(std::pair<std::string,int>("n",0));
-	map.insert(std::pair<std::string,int>("e",0));
-	map.insert(std::pair<std::string,int>("s",0));
-	map.insert(std::pair<std::string,int>("o",0));
-	map.insert(std::pair<std::string,int>("ne",0));
-	map.insert(std::pair<std::string,int>("no",0));
-	map.insert(std::pair<std::string,int>("so",0));
-	map.insert(std::pair<std::string,int>("se",0));
-	int e = 0;
-	int s = 0;
-	int o = 0;
-	int ne = 0;
-	int no = 0;
-	int se = 0;
-	int so = 0;
-
-	//float diff = y-x;
-
-	for (std::list<std::pair<int,int>>::iterator it = zoneArrive.begin(); it != zoneArrive.end(); ++it)
-	{
-		int xa=(*it).second;
-		int ya=(*it).first;
-
-		if(xa<){
-			if(ya>-0.5*xa+(y+0.5*x)){
-				if(ya>0.5*xa+(y-0.5*x)){
-					++se;
-					map["se"]++;
-				}else{
-					++e;
-					map["e"]++;
-				}
-			}else{
-				if(ya>-2*xa+(y+2*x)){
-					++ne;
-					map["ne"]++;
-				}else{
-					++n;
-					map["n"]++;
-				}
-			}
-		}else{
-			if(ya>-0.5*xa+(y+0.5*x)){
-				if(ya>-2*xa+(y+2*x)){
-					++s;
-					map["s"]++;
-				}else{
-					++so;
-					map["so"]++;
-				}
-			}else{
-				if(ya>0.5*xa+(y-0.5*x)){
-					++o;
-					map["o"]++;
-				}else{
-					++no;
-					map["no"]++;
-				}
-			}
-		}
-			
-	}
-	std::cout<<"n "<<n<<" ne "<<ne<<" e "<<e<<" se "<<se<<" s "<<s<<" so "<<so<<" o "<<o<<" no "<<no<<std::endl;
-	
-	return map;
-}*/
-
-
-
-
-
-
 

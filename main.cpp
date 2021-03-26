@@ -16,9 +16,9 @@ int main(){
 	
 	
 	 //img.load_data("circuits/circuit0.png","circuits/circuit0.toml");
-	//img.load_data("circuits/fusee.png","circuits/fusee.toml");
+	img.load_data("circuits/fusee.png","circuits/fusee.toml");
 	//img.affichage("image.pgm");
-	img.load_data("circuits/trois_quatorze.png","circuits/trois_quatorze.toml");
+	//img.load_data("circuits/trois_quatorze.png","circuits/trois_quatorze.toml");
 	Trajectoire tr = Trajectoire(&img);
 	Dijkstra dij = Dijkstra(&img,&tr);
 	dij.createGraph();
@@ -42,6 +42,9 @@ int main(){
 	}
 
 	tr.afficher();
+
+	tr.lisser();
+	tr.detaillerTrajectoire();
 	
 
 	tr.writeServeur("pi21mars.txt");
@@ -95,6 +98,6 @@ int main(){
 	//tr.traceSegment(10,10,20,25);
 	//tr.write("sortie.toml");
 	//tr.load("sortie.toml");
-	//std::cout<<"Verification de la trajectoire..."<<std::endl;
-	//std::cout<<tr.verifier_trajectoire()<<std::endl;
+	std::cout<<"Verification de la trajectoire..."<<std::endl;
+	std::cout<<tr.verifier_trajectoire()<<std::endl;
 }

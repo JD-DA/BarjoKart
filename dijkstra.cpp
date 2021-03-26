@@ -41,6 +41,10 @@ Dijkstra::~Dijkstra(){
  
 auto comp = [](const pair<int, int> &a, const pair<int, int> &b) {return a.second > b.second; };
  
+ /**
+ * Algorithme de Dijkstra
+ *
+ **/
 void Dijkstra::algoDijkstra () {
  //crédit : 40tude.fr
   
@@ -102,7 +106,13 @@ void Dijkstra::algoDijkstra () {
 }
 
 
-
+/**
+* Fonction importante qui va créer un graphe basé sur l'image, pour ne pas avoir un graphe dont chaque sommet correspond a un pixel 
+* ici les sommets sont séparé d'une distance de maxAcceleration/2
+* Créer aussi les arêtes entre chaque sommet en verifiant qu'aucun obstacle ne passe au travers
+* A été tenté a la fin de cette fonction de reduire le graphe au sous graphe contenu dans la figure mais cela créait un probleme au niveau de la numerotation 
+* des sommets pour l'algorithme de dijkstra
+**/
 void Dijkstra::createGraph(){
 	int indexNoeud = 1;
 
@@ -262,68 +272,22 @@ void Dijkstra::createGraph(){
 
 			
 		}
-
-	//vector<vector<pair<int, int>>> graphLight((img->height/maxAcceleration+1)*(img->width/maxAcceleration+1));
-
-//vector<int> vec(coordonnees.size());
-//set<int> noeudParcouru;
-
-//vec.push_back(0);
 int noeud;
-
-//cout<<"On réduit le graphe"<<endl;
-/*
-while(not(vec.empty())){
-	noeud=vec.back();
-	vec.pop_back();
-	if(noeudParcouru.find(noeud)==noeudParcouru.end()){
-		//cout<<' '<<noeud<<endl;
-		//cout<<"Voisin : ";
-		noeudParcouru.insert(noeud);
-		for (std::vector<pair<int,int>>::iterator i = graph[noeud].begin(); i != graph[noeud].end(); ++i)
-		{
-			//cout<<' '<<(*i).first;
-			vec.push_back((*i).first);
-		}
-		//cout<<endl;
-	}
-}
-cout<<endl;
-int ndMax=0;
-for (std::set<int>::iterator i = noeudParcouru.begin(); i != noeudParcouru.end(); ++i)
-{
-	ndMax=max(ndMax,*i);
-	graphLight[*i]=graph[*i];
-}*/
 indice=0;
 //this->NbNodes=noeudParcouru.max();
 //this->NbNodes=ndMax;
 this->NbNodes=graph.size();
 cout<<"Nombre de noeuds : "<<NbNodes<<endl;
-/*for (vector<vector<pair<int, int>>>::iterator i = graphLight.begin(); i != graphLight.end(); ++i)
-{
-	if(not((*i).empty())){
-	cout<<indice<<" : [";
-	for (std::vector<pair<int,int>>::iterator j = (*i).begin(); j != (*i).end(); ++j)
-	{
-
-		cout<<'['<<(*j).first<<','<<(*j).second<<']';
-	}
-	cout<<']'<<endl;
-	indice++;
-}
-	
-}*/
-
-
-
 	this->G=graph;
 	this->coor=coordonnees;
 
 	cout<<"\n\nCoor de départ : "<<coor[0].first<<' '<<coor[0].second<<endl;
 }
 
-
+/**
+* Renvoie le noeud le plus proche de l'arrivée
+*
+**/
 void Dijkstra::chercherNoeudArrive(){
 	int ndMax;
 	int distanceMini=max(img->height,img->width);
@@ -353,10 +317,15 @@ void Dijkstra::chercherNoeudArrive(){
 
 	cout<<"Le noeud le plus proche : "<<ndMax<<endl;
 	this->noeudArrivee = ndMax;
+	traj->finalX=coor[ndMax].first;
+	traj->finalY=coor[ndMax].second;
 }
 
 
-
+/**
+* Prend la suite de sommet trouvé par l'algo de dikkstra, tous espacés de moins que l'AccMax, et créé alors la trajectoire dans cette derniere classe
+* Une étape correspond à une liason entre deux sommets.
+**/
 void Dijkstra::transformer(){
 	int indice=1;
 	int x=coor[0].first;
