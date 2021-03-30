@@ -12,11 +12,11 @@ Image::Image(){
 }
 
 Image::~Image(){
-	/*for (int i = 0; i < this->height; i++)
+	for (int i = 0; i < this->height; i++)
 	{
 		delete(matrice[i]);
-	}*/
-	//delete(matrice);
+	}
+	delete(matrice);
 	/*for (std::list<std::pair<int,int>>::iterator i = zoneArrive.begin(); i != zoneArrive.end(); ++i)
 	{
 		delete(i);
@@ -133,16 +133,13 @@ if(fichier!=NULL){
 std::cout<<"Écriture PGM..."<<std::endl;
 
 	
-	int x=departureX;
-	int y=departureY;
-	//float diff = y-x;
 
 	int num;
 	for(int i=0; i<height;i++){
 		for(int j=0;j<width;j++){
 			char cara =matrice[i][j];
 			if(cara=='b'){
-				
+				//utilisé pour afficher les directions
 				/*if(i<2*(j)+(y-2*x)){
 					if(i>-0.5*j+(y+0.5*x)){
 						if(i>0.5*j+(y-0.5*x)){
@@ -241,19 +238,16 @@ std::cout<<"Écriture PGM..."<<std::endl;
 						}
 					}
 				}
-				//num = 255;
 				
 			}else if(cara=='n'){
 				num = 0;
 			}else if (cara=='a'){
 				num = 50;
 			}else{
-				//std::cout<<"Charactère bizarre : i="<<i<<" j="<<j<<std::endl;
 				num = 100;
 			}
 			fprintf(fichier, "%d ", num);
 		}
-		//putchar('\n');
 	}
 	fclose(fichier);
 	std::cout<<"L'image a été écrite, allez voir :"<<fichierSortie<<std::endl;
@@ -264,15 +258,29 @@ else{
 }
 
 bool Image::verifierPixel(int x,int y){
-	//std::cout<<x-1<<';'<<y-1<<' '<<matrice[y-1][x-1];
 	return matrice[y-1][x-1]!='n';
 }
 
 bool Image::verifierPixel2(int x,int y){
-	//std::cout<<' '<<matrice[y][x];
-	//if(matrice[y][x]!='b'){
-	//	std::cout<<' '<<matrice[y][x];}
 	return matrice[y][x]!='n';
+}
+
+
+bool Image::verifierPixel3(int x,int y){
+	bool test= matrice[y][x]!='n';
+	if(x-1>0){
+		test = test and matrice[y][x-1]!='n';
+	}
+	if(y-1>0){
+		test = test and matrice[y-1][x]!='n';
+	}
+	if(y+1<height){
+		test = test and matrice[y+1][x]!='n';
+	}
+	if(x+1<width){
+		test = test and matrice[y][x+1]!='n';
+	}
+	return test;
 }
 
 bool Image::verifierArrivee(int x,int y){
@@ -280,9 +288,9 @@ bool Image::verifierArrivee(int x,int y){
 }
 
 bool Image::verifierArrivee2(int x,int y){
-	//std::cout<<"verifierArrivee2 x/y : "<<x<<' '<<y<<" = "<<matrice[y][x]<<std::endl;
 	return matrice[y][x]=='a';
 }
+
 /**
 * renvoi une paire de coordonnées de type y/x  correspondant au centre de la zone d'arrivée(origine en haut à gauche)
 **/
@@ -368,10 +376,7 @@ std::map<std::string,int> Image::direction(int x,int y){
 			
 	}
 	std::cout<<"n "<<n<<" ne "<<ne<<" e "<<e<<" se "<<se<<" s "<<s<<" so "<<so<<" o "<<o<<" no "<<no<<std::endl;
-	/*for(auto it = map.cbegin(); it != map.cend(); ++it)
-{
-    std::cout << it->first << " " << it->second << "\n";
-}*/
+	
 return map;
 
 

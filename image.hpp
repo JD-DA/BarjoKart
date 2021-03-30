@@ -33,6 +33,7 @@ public:
 	void affichageDirection(const char*,int,int);
 	bool verifierPixel(int,int);
 	bool verifierPixel2(int,int);
+	bool verifierPixel3(int,int);
 	bool verifierArrivee(int,int);
 	bool verifierArrivee2(int,int);
 	std::pair<int,int> centreZoneArrivee();

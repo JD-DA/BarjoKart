@@ -51,8 +51,7 @@ public:
 	void inserer(std::pair<int,std::pair<int,int>>);
 	void detaillerTrajectoire();
 	void remplacerTrajectoire(std::vector<std::pair<int,int>> );
-	//bool verifier(int xd,int yd,int xm,int ym,int x,int y);
-
+	void reset();
 
 	
 

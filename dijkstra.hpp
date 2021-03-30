@@ -32,6 +32,7 @@ public:
 	void createGraph();
 	void chercherNoeudArrive();
 	void transformer();
+	void reset();
 
 	Dijkstra(Image*, Trajectoire*);
 	virtual ~Dijkstra();

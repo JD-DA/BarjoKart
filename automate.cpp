@@ -30,21 +30,15 @@ std::pair<int,int> Automate::uncoup(){
 	std::map<std::string,int> map = img->direction(xCourant,yCourant);
 	etapeDouble=false;
 	
-	//std::string directionInterdite = inverse(precedenteDirection);
 	for (std::map<std::string,int>::iterator i = map.begin(); i != map.end(); ++i)
 		{
-			std::cout<<"["<<(*i).first<<";"<<(*i).second<<'],';
-			
-
+			std::cout<<"["<<(*i).first<<";"<<(*i).second<<"],";
 		}
 		std::cout<<std::endl;
-	//std::cout<<"Direction Intrdite : "<<directionInterdite<<std::endl;
 	//map.erase(map.find(directionInterdite));
 	for (std::map<std::string,int>::iterator i = map.begin(); i != map.end(); ++i)
 		{
 			std::cout<<"["<<(*i).first<<";"<<(*i).second<<"],";
-			
-
 		}
 		std::cout<<std::endl;
 	std::map<std::string,int> potentiel;
@@ -143,9 +137,6 @@ std::pair<int,int> Automate::uncoup(){
 			}std::cout<<std::endl;
 			int coupPotentiel = img->potentiel(dir,xCourant,yCourant);
 			std::cout<<" nbPixel max, sa direction et son potentiel : "<<max<< " "<<dir<<" "<<coupPotentiel<<std::endl;
-			/*if(coupPotentiel>15){
-				break;
-			}else{*/
 				potentiel.insert(std::pair<std::string,int>(dir,coupPotentiel ));
 				std::cout<<"on l'a inseré"<<std::endl;
 				map.erase(map.find(dir));
@@ -224,7 +215,6 @@ std::pair<int,int> Automate::coupFinal(){
 	std::map<std::string,int> potentiel;
 	std::string dir;
 	int max=0;
-	bool chercherParmiReste=false;
 	for (std::map<std::string,int>::iterator i = map.begin(); i != map.end(); ++i)
 		{
 			//std::cout<<"Dir et nbdePixel "<<(*i).first<<" "<<(*i).second<<std::endl;
@@ -310,12 +300,7 @@ void Automate::machine(){
 		if(etapeDouble){
 			traj->inserer(std::pair<int,std::pair<int,int>>(nbEtapes++,std::pair<int,int>(etape.first,etape.second)));
 		}
-
-
 	}
-	
-
-
 }
 
 // Renvoie juste la direction inverse

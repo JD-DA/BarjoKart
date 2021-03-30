@@ -1,0 +1,557 @@
+Lecture du .toml...
+Acceleration Max : 30
+Couleur d'arrivée :255 0 0
+Position de départ : x->38 y->89
+Construction de l'image...
+circuits/circuit0.png
+Largeur : 100 Hauteur : 100
+                                                              nnnnnnnnnnnnn                         
+                                                          nnnnnnnnnnnnnnnnnnn                       
+                                                        nnnnnnnnnnnnnnnnnnnnnn                      
+                                                     nnnnnnnnnnnaaaaaaaaaannnnnn                    
+                                                   nnnnnnnnnnnnaaaaaaaaaaaannnnnn                   
+                                                  nnnnnn      aaaaaaaaaaaaaannnnnn                  
+                                                 nnnnnn        aaaaaaaaaaaaaannnnnn                 
+                                               nnnnnnn                    aaaaannnnn                
+                                              nnnnnnn                      aaaaannnnn               
+                                             nnnnnn                         aaaaannnnn              
+                                           nnnnnnn                           aaaaannnnn             
+                                          nnnnnn                             aaaaaannnn             
+                                         nnnnnn                               aaaaannnn             
+                                        nnnnnn                                aaaaannnn             
+                                       nnnnnn                                 aaaaannnn             
+                                      nnnnnn                                  aaaaannn              
+                                     nnnnnn                                   aaaaannn              
+                                   nnnnnn                                     aaaannnn              
+                                  nnnnnn                                      aaannnn               
+                                 nnnnnn                                       aaannnn               
+                                nnnnnn                                        aannnn                
+                               nnnnnn                                         annnnn                
+                              nnnnnn                                          annnnn                
+                             nnnnn                                            annnn                 
+                            nnnnn                                             nnnnn                 
+                           nnnnn                                              nnnnn                 
+                          nnnnnn                                              nnnn                  
+                         nnnnnn                                              nnnn                   
+                        nnnnn                                               nnnnn                   
+                       nnnnn                                               nnnnn                    
+                      nnnnn                                               nnnnn                     
+                      nnnnn                                              nnnnn                      
+                    nnnnnn                                             nnnnnn                       
+                   nnnnnn                                            nnnnnnn                        
+                  nnnnnn                                            nnnnnnn                         
+                 nnnnnn                                            nnnnnnn                          
+                 nnnnn                                           nnnnnnn                            
+                nnnnn                                          nnnnnnnn                             
+               nnnnn                                          nnnnnnn                               
+               nnnn                                         nnnnnnnn                                
+              nnnnn                                       nnnnnnnnn                                 
+             nnnnn                                      nnnnnnnnn                                   
+             nnnnn                                    nnnnnnnnn                                     
+             nnnn                                   nnnnnnnnn                                       
+            nnnnn                                 nnnnnnnnn                                         
+            nnnn                                nnnnnnnnn                                           
+           nnnnn                              nnnnnnnnn                                             
+           nnnn                            nnnnnnnnnn                                               
+           nnnn                           nnnnnnnnn                                                 
+           nnnn                           nnnnnnn                                                   
+           nnnn                           nnnnn                                                     
+           nnnn                           nnnn                                                      
+           nnnn                           nnnn                                                      
+           nnnn                           nnnn                                                      
+           nnnn                           nnnn                                                      
+           nnnn                           nnnn                                                      
+           nnnn                           nnnn                                                      
+           nnnn                           nnnn                                                      
+           nnnn                           nnnn                                                      
+           nnnn                           nnnn                                                      
+           nnnnn                          nnnn                                                      
+            nnnn                          nnnn                                                      
+            nnnn                          nnnn                                                      
+            nnnnn                         nnnn                                                      
+             nnnn                         nnnnn                                                     
+             nnnn                          nnnn                                                     
+             nnnnn                         nnnn                                                     
+              nnnn                         nnnnn                                                    
+              nnnn                          nnnn                                                    
+              nnnnn                         nnnnn                                                   
+               nnnn                          nnnnn                                                  
+               nnnn                          nnnnn                                                  
+               nnnnn                          nnnnn                                                 
+                nnnn                           nnnn                                                 
+                nnnn                           nnnnn                                                
+                nnnnn                           nnnn                                                
+                 nnnn                           nnnnn                                               
+                 nnnnn                           nnnn                                               
+                  nnnn                           nnnn                                               
+                  nnnn                           nnnn                                               
+                  nnnnn                          nnnn                                               
+                   nnnn                          nnnn                                               
+                   nnnn                          nnnn                                               
+                   nnnnn                         nnnn                                               
+                    nnnnn                       nnnnn                                               
+                    nnnnn                       nnnn                                                
+                     nnnnn                      nnnn                                                
+                      nnnnn                     nnnn                                                
+                       nnnnn         g         nnnnn                                                
+                       nnnnn                   nnnnn                                                
+                        nnnnn                  nnnn                                                 
+                         nnnn                  nnnn                                                 
+                         nnnn                  nnnn                                                 
+                         nnnn                 nnnnn                                                 
+                         nnnn                 nnnn                                                  
+                        nnnnnnn              nnnnn                                                  
+                        nnnnnnnn          nnnnnnn                                                   
+                         nnnnnnnnnnnnnnnnnnnnnnnn                                                   
+                           nnnnnnnnnnnnnnnnnnnnn                                                    
+                             nnnnnnnnnnnnnnnnn                                                      
+Image contruite !
+Nb de pixel de la zone d'arrivée : 116
+Taille de la liste : 116
+Chargement des données de la trajectoire...
+ x 38 y 89 maxAcceleration 30
+]
+nbNodes 0
+ Creation du Graph : accMax : 15
+ premier x : 8 Premier y : 14
+ 1 2 3 4 5 -1 6
+ 7 -1 8 9 10 11 12
+ 13 14 15 -1 16 17 18
+ 19 20 21 22 23 24 25
+ 26 27 28 29 30 31 32
+ 33 -1 0 34 35 36 37
+On a créé les noeuds
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+0 : [[28,1][27,1]]
+1 : [[7,1][2,1]]
+2 : [[1,1][7,1][3,1]]
+3 : []
+4 : [[9,1][8,1][5,1][10,1]]
+5 : [[10,1][4,1][9,1]]
+6 : [[12,1][11,1]]
+7 : [[1,1][13,1][2,1]]
+8 : [[15,1][14,1][9,1][4,1]]
+9 : [[4,1][8,1][15,1][10,1][5,1]]
+10 : [[5,1][9,1][4,1]]
+11 : [[17,1][16,1][12,1][18,1][6,1]]
+12 : [[6,1][18,1][11,1][17,1]]
+13 : [[7,1][19,1]]
+14 : [[20,1][15,1][21,1][8,1]]
+15 : [[8,1][21,1][14,1][20,1][9,1]]
+16 : [[23,1][22,1][17,1][24,1][11,1]]
+17 : [[11,1][24,1][16,1][23,1][18,1][25,1][12,1]]
+18 : [[12,1][25,1][17,1][24,1][11,1]]
+19 : [[13,1][26,1]]
+20 : [[14,1][27,1][21,1][28,1][15,1]]
+21 : [[15,1][28,1][20,1][27,1][14,1]]
+22 : [[29,1][23,1][30,1][16,1]]
+23 : [[16,1][30,1][22,1][29,1][24,1][31,1][17,1]]
+24 : [[17,1][31,1][23,1][30,1][16,1][25,1][32,1][18,1]]
+25 : [[18,1][32,1][24,1][31,1][17,1]]
+26 : [[19,1][33,1]]
+27 : [[20,1][28,1][21,1]]
+28 : [[21,1][0,1][27,1][20,1]]
+29 : [[22,1][30,1][35,1][23,1]]
+30 : [[23,1][35,1][29,1][34,1][22,1][31,1][36,1][24,1]]
+31 : [[24,1][36,1][30,1][35,1][23,1][32,1][37,1][25,1]]
+32 : [[25,1][37,1][31,1][36,1][24,1]]
+33 : [[26,1]]
+34 : [[35,1][30,1]]
+35 : [[30,1][34,1][29,1][36,1][31,1]]
+36 : [[31,1][35,1][30,1][37,1][32,1]]
+37 : [[32,1][36,1][31,1]]
+38 : []
+39 : []
+40 : []
+41 : []
+Nombre de noeuds : 42
+
+
+Coor de départ : 38 89
+
+0 200
+
+1 200
+
+2 200
+
+3 200
+4 31
+Maj du noeud : 4 31
+5 16
+Maj du noeud : 5 16
+
+6 200
+
+7 200
+8 61
+9 46
+10 31
+
+11 200
+
+12 200
+
+13 200
+14 91
+15 76
+
+16 200
+
+17 200
+
+18 200
+
+19 200
+20 106
+
+21 200
+
+22 200
+
+23 200
+
+24 200
+
+25 200
+
+26 200
+
+27 200
+
+28 200
+
+29 200
+
+30 200
+
+31 200
+
+32 200
+
+33 200
+
+34 200
+
+35 200
+
+36 200
+
+37 200
+Le noeud le plus proche : 5
+
+Path from node 0 to node 0 cost 0
+0
+
+Path from node 0 to node 1 cost 2147483647
+1
+
+Path from node 0 to node 2 cost 2147483647
+2
+
+Path from node 0 to node 3 cost 2147483647
+3
+
+Path from node 0 to node 4 cost 5
+4 <- 8 <- 15 <- 21 <- 28 <- 0
+
+Path from node 0 to node 5 cost 5
+5 <- 9 <- 15 <- 21 <- 28 <- 0
+
+Path from node 0 to node 6 cost 2147483647
+6
+
+Path from node 0 to node 7 cost 2147483647
+7
+
+Path from node 0 to node 8 cost 4
+8 <- 15 <- 21 <- 28 <- 0
+
+Path from node 0 to node 9 cost 4
+9 <- 15 <- 21 <- 28 <- 0
+
+Path from node 0 to node 10 cost 5
+10 <- 9 <- 15 <- 21 <- 28 <- 0
+
+Path from node 0 to node 11 cost 2147483647
+11
+
+Path from node 0 to node 12 cost 2147483647
+12
+
+Path from node 0 to node 13 cost 2147483647
+13
+
+Path from node 0 to node 14 cost 3
+14 <- 21 <- 28 <- 0
+
+Path from node 0 to node 15 cost 3
+15 <- 21 <- 28 <- 0
+
+Path from node 0 to node 16 cost 2147483647
+16
+
+Path from node 0 to node 17 cost 2147483647
+17
+
+Path from node 0 to node 18 cost 2147483647
+18
+
+Path from node 0 to node 19 cost 2147483647
+19
+
+Path from node 0 to node 20 cost 2
+20 <- 28 <- 0
+
+Path from node 0 to node 21 cost 2
+21 <- 28 <- 0
+
+Path from node 0 to node 22 cost 2147483647
+22
+
+Path from node 0 to node 23 cost 2147483647
+23
+
+Path from node 0 to node 24 cost 2147483647
+24
+
+Path from node 0 to node 25 cost 2147483647
+25
+
+Path from node 0 to node 26 cost 2147483647
+26
+
+Path from node 0 to node 27 cost 1
+27 <- 0
+
+Path from node 0 to node 28 cost 1
+28 <- 0
+
+Path from node 0 to node 29 cost 2147483647
+29
+
+Path from node 0 to node 30 cost 2147483647
+30
+
+Path from node 0 to node 31 cost 2147483647
+31
+
+Path from node 0 to node 32 cost 2147483647
+32
+
+Path from node 0 to node 33 cost 2147483647
+33
+
+Path from node 0 to node 34 cost 2147483647
+34
+
+Path from node 0 to node 35 cost 2147483647
+35
+
+Path from node 0 to node 36 cost 2147483647
+36
+
+Path from node 0 to node 37 cost 2147483647
+37
+
+Path from node 0 to node 38 cost 2147483647
+38
+
+Path from node 0 to node 39 cost 2147483647
+39
+
+Path from node 0 to node 40 cost 2147483647
+40
+
+Path from node 0 to node 41 cost 2147483647
+41
+5 <- 9 <- 15 <- 21 <- 28 <- 0
+5
+X & y de départ : 38 89
+trajectoire= [
+Taille chemin : 6
+xc & yc : 38 74	 res : 38 89[0,-15],
+xc & yc : 38 59	 res : 38 74[0,-15],
+xc & yc : 38 44	 res : 38 59[0,-15],
+xc & yc : 53 29	 res : 38 44[15,-15],
+xc & yc : 68 14	 res : 53 29[15,-15],
+]
+On est presque arrivé ! 
+
+avant-dernieres coordonnées : x/y 68 14
+on lance le dernier coup !
+ x courant : 68 y courant : 14
+n 37 ne 21 e 48 se 5 s 0 so 0 o 0 no 5
+On a trouvé la premiere direction : e
+Son potentiel : 14
+La vitesse et sa direction : 14 e
+Dernire etape : x/y 14 0 Size : 5
+1 : [0,-15],2 : [0,-15],3 : [0,-15],4 : [15,-15],5 : [15,-15],6 : [14,0],
+On lisse la trajectoire...
+1
+2
+3
+4
+
+Etape 4 : 53 29 Traj: 
+[38 89],[38 44],
+l'etape precedente : 3 38 44
+5
+6
+
+Etape 6 : 82 14 Traj: 
+[38 89],[38 44],[68 14],
+l'etape precedente : 5 68 14
+Trajectoire simplifiée, en coordonnées directes :
+38 89
+38 44
+68 14
+68 14
+
+
+
+
+
+xd/yd : 38/89	xf/yf : 38/44
+Max acceleration : 30
+
+
+Pas x : 0  pas y : -30
+Milieu x : 38  Milieu y : 66 milieu par equation :-nan
+Pos X:Y courant : 38 89
+Etape : x/y 0/2147483559
+Etape : x/y 0/-30
+On est allé trop loin :  xd/yd 38/89 xm/ym 38/66 x/y 38/59 y calc : -nan
+						STOP
+[
+xd/yd : 38/89	xf/yf : 38/44	xCourant/yCourant : 38/89
+Dernire etape :  : 0/-45
+On rajoute une petite etape : xc/yc 38/59
+[[0;-30],[0;-15],
+xd/yd : 38/89	xf/yf : 38/44	xCourant/yCourant : 38/44
+Dernire etape :  : 0/0
+
+
+
+
+
+xd/yd : 38/44	xf/yf : 68/14
+Max acceleration : 30
+
+
+Pas x : 15  pas y : -15
+Milieu x : 53  Milieu y : 29 milieu par equation :29
+Pos X:Y courant : 38 44
+Etape : x/y 15/-15
+Etape : x/y 15/-15
+						Pas X:Y courant : 15 -15
+						X:Y courant : 53 29
+						X:Y laPaire : 15 -15
+Etape : x/y 30/-30
+Etape : x/y 30/-30
+On est allé trop loin :  xd/yd 38/44 xm/ym 53/29 x/y 83/-1 y calc : -1
+						STOP
+[[15;-15],[15;-15],
+xd/yd : 38/44	xf/yf : 68/14	xCourant/yCourant : 68/14
+Dernire etape :  : 0/0
+On est arrivé a bon port !
+[[15;-15],[15;-15],
+xd/yd : 38/44	xf/yf : 68/14	xCourant/yCourant : 68/14
+Dernire etape :  : 0/0
+
+
+
+
+
+xd/yd : 68/14	xf/yf : 68/14
+Max acceleration : 30
+
+
+Pas x : 0  pas y : -2147483648
+Milieu x : 68  Milieu y : 14 milieu par equation :-nan
+Pos X:Y courant : 68 14
+Etape : x/y 0/2147483634
+Etape : x/y 0/-2147483648
+On est allé trop loin :  xd/yd 68/14 xm/ym 68/14 x/y 68/-2147483634 y calc : -nan
+						STOP
+[
+xd/yd : 68/14	xf/yf : 68/14	xCourant/yCourant : 68/14
+Dernire etape :  : 0/0
+On est arrivé a bon port !
+[
+xd/yd : 68/14	xf/yf : 68/14	xCourant/yCourant : 68/14
+Dernire etape :  : 0/0
+[[0;0],[0;-30],[0;-15],[0;0],[15;-15],[15;-15],[0;0],
+Size : 7
+Test : x/y : 68/14
+Remplacement de la Trajectoire... 
+0 : [0,0],1 : [0,-30],2 : [0,-15],3 : [0,0],4 : [15,-15],5 : [15,-15],6 : [0,0],
+Verification de la trajectoire...
+On lance la vérification...
+[0,0],[0,-30],[0,-15],[0,0],[15,-15],[15,-15],[0,0],]
+Pour 1 :   On a verifié les pixels 
+On a passé manhattan 
+Pour 2 :   On a verifié les pixels 
+On a passé manhattan 
+Pour 3 :   On a verifié les pixels 
+On a passé manhattan 
+Pour 4 :   On a verifié les pixels 
+On a passé manhattan 
+Pour 5 :   On a verifié les pixels 
+On a passé manhattan 
+Pour 6 :   On a verifié les pixels 
+On a passé manhattan 
+On est arrivé au milieu de nul part...
+0
