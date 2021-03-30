@@ -50,6 +50,7 @@ public:
 
 	void inserer(std::pair<int,std::pair<int,int>>);
 	void detaillerTrajectoire();
+	void detaillerTrajectoireLeger();
 	void remplacerTrajectoire(std::vector<std::pair<int,int>> );
 	void reset();
 

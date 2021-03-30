@@ -52,40 +52,22 @@ void Image::build_image(std::string fichier){
 				//std::cout<<r<<' '<<g<<' '<<b<<std::endl;
 				if((r==255 and g==255 and b==255)){
 					this->matrice[i][j]='b';
-					putchar(' ');
+					//putchar(' ');
 				}else if(r==arrivalColorR and g==arrivalColorG and b==arrivalColorB){
 					this->matrice[i][j]='a';
 					nbPixelArrive++;
 					zoneArrive.push_back(std::pair<int,int>(i,j));
-					putchar('a');
+					//putchar('a');
 				}else if(r==0 and g==0 and b==0){
-					//std::cout<<"000 Vrai"<<std::endl;
 					this->matrice[i][j]='n';
-					putchar('n');
+					//putchar('n');
 				}else{
-					/*test=false;
-					for (int v = 0; v < size; ++v)
-					{
-
-						int* tabtest = tab[v];
-						if(tabtest[0]==r and tabtest[1]==g and tabtest[2]==b){
-							test = true;
-						}
-					}
-					if(!test){
-						int* letab = new int[3];
-						letab[0]=r;
-						letab[1]=g;
-						letab[2]=b;
-						tab[size]= letab;
-						size++;
-					}*/
 					this->matrice[i][j]='g';
-					putchar('g');
+					//putchar('g');
 				}
 
 			}
-			putchar('\n');	
+			//putchar('\n');	
 		}
 		std::cout<<"Image contruite !"<<std::endl;
 		std::cout<<"Nb de pixel de la zone d'arrivée : "<<nbPixelArrive<<std::endl;

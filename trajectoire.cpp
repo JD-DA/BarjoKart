@@ -61,11 +61,15 @@ void Trajectoire::build_fake_trajectoire(){
 **/
 bool Trajectoire::verifier_trajectoire(){
 	std::cout<<"On lance la vérification..."<<std::endl;
+    //std::cout<<"On est rentré dans un mur... : "<<x<<' '<<y<<std::endl;
+    int departureXinter=departureX;
+    int departureYinter=departureY;
 	for (int i=0; i < size; ++i)
 			{
 				std::cout << "[" << etapes[i].first << "," << etapes[i].second << "],";
 			}
 			std::cout << "]"<< std::endl;
+    int res=0;
 	for (int i = 1; i <= size; ++i)
 	{
 
@@ -74,23 +78,26 @@ bool Trajectoire::verifier_trajectoire(){
 			return false;
 		}
 
-		int xSuivant = departureX+etapes[i].first;
-		int ySuivant= departureY+etapes[i].second;
-		std::list<int> traj = traceSegment(departureX,departureY,xSuivant,ySuivant);
-		departureX=xSuivant;
-		departureY=ySuivant;
+		int xSuivant = departureXinter+etapes[i].first;
+		int ySuivant= departureYinter+etapes[i].second;
+		std::list<int> traj = traceSegment(departureXinter,departureYinter,xSuivant,ySuivant);
+		departureXinter=xSuivant;
+		departureYinter=ySuivant;
 		//verification des pixels
 		for (std::list<int>::iterator it = traj.begin(); it != traj.end(); ++it){
 			int x=(*it);
 			it++;
 			int y=(*it);
 		    if(not(img->verifierPixel(x,y))){
-		    	std::cout<<"On est rentré dans un mur..."<<std::endl;
+
+		    	std::cout<<"On est rentré dans un mur... : "<<x<<' '<<y<<std::endl;
+                std::cout<<res<<std::endl;
 				return false;
 			}
 		}	
+        res++;
 	}
-	if(img->verifierArrivee(departureX,departureY)){
+	if(img->verifierArrivee(departureXinter,departureYinter)){
 		std::cout<<"On est arrivé !"<<std::endl;
 		return true;
 	}
@@ -118,7 +125,6 @@ bool Trajectoire::verifierSegment(int xd ,int yd ,int xa ,int ya){
         int y=(*it);
         bool test = (img->verifierPixel3(x,y));
         if(not(test)){
-            std::cout<<std::endl;
             return false;
         }
     }
@@ -589,15 +595,9 @@ void Trajectoire::lisser(){
     {
         xCourant += (*i).second.first;
         yCourant += (*i).second.second;
-        std::cout<<(*i).first<<std::endl;
 
         if(not(verifierSegment(xCourant, yCourant, resX, resY))){
             etapesGenerales.push_back(std::pair<int,int>(xCourant-(*i).second.first,yCourant-(*i).second.second));
-            for (std::list<std::pair<int,int>>::iterator i = etapesGenerales.begin(); i != etapesGenerales.end(); i++)
-            {
-                std::cout<<'['<<(*i).first<<' '<<(*i).second<<"],";
-            }
-            std::cout<<std::endl;
             resX=xCourant-(*i).second.first;
             resY=yCourant-(*i).second.second;
         }
@@ -646,8 +646,6 @@ void Trajectoire::detaillerTrajectoire(){
         ymilieu=(yd+yf)/2.0;
 
         m=(float)(yd-yf)/(float)(xd-xf);
-        std::cout<<"\n\n\n\n\nxd/yd : "<<xd<<'/'<<yd<<"\txf/yf : "<<xf<<'/'<<yf<<std::endl;
-        std::cout<<"Max acceleration : "<<maxAcceleration<<std::endl;
         // y=m(x-a)-b
         // y=m(x-xd)-yd
         //on a notre equation de droite
@@ -682,16 +680,13 @@ void Trajectoire::detaillerTrajectoire(){
         }else{
             pasY=(m*(x-xd)+yd)-yd;
         }
-        std::cout<<"\n\nPas x : "<<pasX<<"  pas y : "<<pasY<<std::endl;
-        std::cout<<"Milieu x : "<<xmilieu<<"  Milieu y : "<<ymilieu<<" milieu par equation :"<<(m*(xmilieu-xd)+yd)<<std::endl;
-
+        
         int xCourant=xd;
         int yCourant=yd;
         int pasXcourant=0;
         int pasYcourant=0;
         int pasXPrecedant=0;
         int pasYPrecedant=0;
-        std::cout<<"Pos X:Y courant : "<<xCourant<<' '<<yCourant<<std::endl;
         
         std::vector<std::pair<int,int>> etapesAcceleration;
         std::vector<std::pair<int,int>> etapesAccelerationDeceleration;
@@ -740,18 +735,12 @@ void Trajectoire::detaillerTrajectoire(){
             etapesAccelerationDeceleration.push_back(laPaire);
             pasXPrecedant=pasXcourant;
             pasYPrecedant=pasYcourant;
-            std::cout<<"\t\t\t\t\t\tPas X:Y courant : "<<pasXcourant<<' '<<pasYcourant<<std::endl;
-            std::cout<<"\t\t\t\t\t\tX:Y courant : "<<xCourant<<' '<<yCourant<<std::endl;
-            std::cout<<"\t\t\t\t\t\tX:Y laPaire : "<<laPaire.first<<' '<<laPaire.second<<std::endl;
-
+            
         }
         //On regarde si on peut s'approcher du milieu en doublant la derniere etape d'acceleration
         
         if((xCourant+pasXPrecedant>=std::min(xmilieu,xd) and pasXPrecedant+xCourant<std::max(xmilieu,xd) and pasYPrecedant+yCourant>=std::min(ymilieu,yd) and pasYPrecedant+yCourant<=std::max(ymilieu,yd) )){
-                std::cout<<"\t\t\t\t\t\tOn rajoute une etape d'acceleration"<<std::endl;
-                std::cout<<"\t\t\t\t\t\tPas X:Y courant : "<<pasXPrecedant<<' '<<pasYPrecedant<<std::endl;
-                std::cout<<"\t\t\t\t\t\tX:Y courant : "<<xCourant+pasXPrecedant<<' '<<yCourant+pasYPrecedant<<std::endl;
-                std::pair<int,int> laPaire = std::pair<int,int>(pasXPrecedant,pasYPrecedant);
+                    std::pair<int,int> laPaire = std::pair<int,int>(pasXPrecedant,pasYPrecedant);
             etapesFines.push_back(laPaire);
             etapesAcceleration.push_back(laPaire);
             etapesAccelerationDeceleration.push_back(laPaire);
@@ -760,9 +749,6 @@ void Trajectoire::detaillerTrajectoire(){
             }
         //on regarde maintenant si l'espace restant jusqu'au milieu du segmant est >= a la moitiée de l'étape precedente permettant alors de la rajouter.
         if((xCourant+1+pasXPrecedant/2>=std::min(xmilieu,xd) and pasXPrecedant/2+1+xCourant<std::max(xmilieu,xd) and pasYPrecedant/2+1+yCourant>=std::min(ymilieu,yd) and pasYPrecedant/2+1+yCourant<std::max(ymilieu,yd) )){
-                std::cout<<"\t\t\t\t\t\tOn rajoute une demi etape d'acceleration"<<std::endl;
-                std::cout<<"\t\t\t\t\t\tPas X:Y courant : "<<pasXPrecedant<<' '<<pasYPrecedant<<std::endl;
-                std::cout<<"\t\t\t\t\t\tX:Y courant : "<<xCourant+pasXPrecedant<<' '<<yCourant+pasYPrecedant<<std::endl;
                 std::pair<int,int> laPaire = std::pair<int,int>(pasXPrecedant,pasYPrecedant);
             etapesFines.push_back(laPaire);
             //etapesAcceleration.push_back(laPaire);
@@ -776,35 +762,18 @@ void Trajectoire::detaillerTrajectoire(){
 
         
         //on vient de faire la periode d'acceleration, maintenant on decelere.
-        //la derniere etapes d'acceleration doit peut-etre etre supprimée. A vérifier...
-        //std::cout<<'[';
         for (std::vector<std::pair<int,int>>::reverse_iterator i = etapesAcceleration.rbegin(); i != etapesAcceleration.rend(); ++i)
         {
-            //std::cout<<'['<<(*i).first<<';'<<(*i).second<<"],";
             etapesFines.push_back(std::pair<int,int>((*i).first,(*i).second));
             etapesAccelerationDeceleration.push_back(std::pair<int,int>((*i).first,(*i).second));
             xCourant+=(*i).first;
             yCourant+=(*i).second;
         }
-        //std::cout<<std::endl;
-
-        std::cout<<'[';
-        for (std::vector<std::pair<int,int>>::iterator i = etapesAccelerationDeceleration.begin(); i != etapesAccelerationDeceleration.end(); ++i)
-            {
-                std::cout<<'['<<(*i).first<<';'<<(*i).second<<"],";
-            }
-        std::cout<<std::endl;
-        
 
         
-
-        std::cout<<"xd/yd : "<<xd<<'/'<<yd<<"\txf/yf : "<<xf<<'/'<<yf<<"\txCourant/yCourant : "<<xCourant<<'/'<<yCourant<<std::endl;
-        std::cout<<"Dernire etape :  : "<<xf- xCourant <<'/'<<yf- yCourant<<std::endl;
-
         if(xf- xCourant==0 and yf- yCourant==0){
             std::cout<<"On est arrivé a bon port !"<<std::endl;
         }else if (manhattan(xf- xCourant,yf- yCourant)<=maxAcceleration){
-            std::cout<<"L'espace restant correspond a une petite etape"<<std::endl;
             //l'espace restant jusqu'a la fin est inferieur a l'acceleration maximale
             etapesFines.push_back(std::pair<int,int>(xf- xCourant,yf- yCourant));
             etapesAccelerationDeceleration.push_back(std::pair<int,int>(xf- xCourant,yf- yCourant));
@@ -820,14 +789,12 @@ void Trajectoire::detaillerTrajectoire(){
                 yCourant+=pasY;
                 
             }
-            std::cout<<"On rajoute une petite etape : xc/yc "<<xCourant<<'/'<<yCourant<<std::endl;
             //ON revient au cas precedent...
             etapesFines.push_back(std::pair<int,int>(0,yf- yCourant));
             etapesAccelerationDeceleration.push_back(std::pair<int,int>(0,yf- yCourant));
             yCourant+=yf- yCourant;
         }else{
             //l'espace restant est superieur à l'acceleration maximale
-            std::cout<<"L'espace restant est superieur a celui d'une etape de base\t";
             bool xfPlusGrd=xf>xCourant;
             while((xCourant+pasX<xf and xfPlusGrd) or (xf<xCourant+pasX and not(xfPlusGrd))){
                 etapesFines.push_back(std::pair<int,int>(pasX,(m*(xCourant+pasX-xd)+yd)- yCourant));
@@ -835,7 +802,6 @@ void Trajectoire::detaillerTrajectoire(){
                 xCourant+=pasX;
                 yCourant=(m*(xCourant-xd)+yd);
             }
-            std::cout<<"On rajoute une petite etape : xc/yc "<<xCourant<<'/'<<yCourant<<std::endl;
             //On revient au cas precedent...
             etapesFines.push_back(std::pair<int,int>(xf- xCourant,yf- yCourant));
             etapesAccelerationDeceleration.push_back(std::pair<int,int>(xf- xCourant,yf- yCourant));
@@ -865,6 +831,192 @@ void Trajectoire::detaillerTrajectoire(){
             yTest+=(*i).second;
         }
     std::cout<<std::endl;
+    std::cout<<"Remplacement de la Trajectoire... "<<std::endl;
+
+    this->remplacerTrajectoire(etapesFines);
+}
+
+/**
+* Premiere version, moins regardante sur les pixels voisins de la trajectoire et ne sait pas aller en verticale mais peut nous sortir du petrain...
+* Va lire les etapes generales et les remplir avec des etapes intermedieres. 
+* De plus va créer pour chaque segemtn une phase d'acceleration puis une phase 
+* de deceleration pour reduire le nombre d'étapes
+*
+**/
+void Trajectoire::detaillerTrajectoireLeger(){
+    std::list<std::pair<int,int>>::iterator i = etapesGenerales.begin();
+    int xd,yd;
+    int xf,yf;
+    int xmilieu,ymilieu;
+    int xcourant,ycourant;
+
+    std::vector<std::pair<int,int>> etapesFines;
+
+    float m;
+    xd=(*i).first;
+    yd=(*i).second;
+    i++;
+    while ( i != etapesGenerales.end())
+    {
+        etapesFines.push_back(std::pair<int,int>(0,0));
+        xf=(*i).first;
+        yf=(*i).second;
+        xmilieu=(xd+xf)/2.0;
+        ymilieu=(yd+yf)/2.0;
+
+        m=(float)(yd-yf)/(float)(xd-xf);
+        
+        int x;
+        //recherche des pas x et y
+        //on va incremeneter x jusqu'a ce que la mesure manhattan ne ce plus soit juste inferieur a l'acceleration maxi
+        if(xd>xf){
+            x=xd-1;
+            while(manhattan(x-xd,(m*(x-xd)+yd)-yd)<=maxAcceleration){
+                --x;
+
+            }
+            ++x;
+        }else if (xd<xf){
+            x=xd+1;
+            while(manhattan(x-xd,(m*(x-xd)+yd)-yd)<=maxAcceleration){
+                ++x;
+
+            }
+            --x;
+        }else{
+            x=xd;
+        }
+        int pasX=x-xd;
+        int pasY=(m*(x-xd)+yd)-yd;
+        
+        int xCourant=xd;
+        int yCourant=yd;
+        int pasXcourant=0;
+        int pasYcourant=0;
+        int pasXPrecedant=0;
+        int pasYPrecedant=0;
+        
+        std::vector<std::pair<int,int>> etapesAcceleration;
+        std::vector<std::pair<int,int>> etapesAccelerationDeceleration;
+        while(true){
+
+            //trouver y
+            int yCalc=(m*(xCourant+pasXcourant+pasX-xd)+yd);
+
+            //verifier manhattan
+            int pasXcourantInter=pasXcourant+pasX;
+            //std::cout<<"acceleration de l'etape: "<<manhattan(pasXcourantInter-pasXcourant,yCalc-yCourant- pasYcourant )<<" vx/vy : "<<pasXcourantInter-pasXcourant<<'/'<<yCalc-yCourant- pasYcourant<<std::endl;
+            while(manhattan(pasXcourantInter-pasXcourant,yCalc-yCourant- pasYcourant)>=maxAcceleration and manhattan(pasXcourantInter-pasXcourant,yCalc-yCourant- pasYcourant)<maxAcceleration*2){
+                if(pasXcourantInter<0){
+                    pasXcourantInter++;
+                }else{
+                    pasXcourantInter--;
+                }
+                yCalc=(m*(xCourant+pasXcourantInter-xd)+yd);
+                //std::cout<<"acceleration moindre: "<<manhattan(pasXcourantInter-pasXcourant,yCalc-yCourant- pasYcourant)<<" vx/vy : "<<pasXcourantInter-pasXcourant<<'/'<<yCalc-yCourant- pasYcourant<<std::endl;
+
+            }
+
+            
+
+            pasXcourant=pasXcourantInter;
+            pasYcourant=yCalc-yCourant;
+
+
+            //si on continue d'accelerer alors que l'on à dépasser la moitié de l'étapes on n'aura pas assez de longueur pour freiner...
+            if(not(xCourant+pasXcourant>=std::min(xmilieu,xd) and pasXcourant+xCourant<=std::max(xmilieu,xd) and pasYcourant+yCourant>=std::min(ymilieu,yd) and pasYcourant+yCourant<=std::max(ymilieu,yd) )){
+                break;
+            }
+            xCourant+=pasXcourant;
+            yCourant+=pasYcourant;
+            std::pair<int,int> laPaire = std::pair<int,int>(pasXcourant,pasYcourant);
+            etapesFines.push_back(laPaire);
+            etapesAcceleration.push_back(laPaire);
+            etapesAccelerationDeceleration.push_back(laPaire);
+            pasXPrecedant=pasXcourant;
+            pasYPrecedant=pasYcourant;
+            
+        }
+        //On regarde si on peut s'approcher du milieu en doublant la derniere etape d'acceleration
+        
+        if((xCourant+pasXPrecedant>=std::min(xmilieu,xd) and pasXPrecedant+xCourant<std::max(xmilieu,xd) and pasYPrecedant+yCourant>=std::min(ymilieu,yd) and pasYPrecedant+yCourant<std::max(ymilieu,yd) )){
+                std::pair<int,int> laPaire = std::pair<int,int>(pasXPrecedant,pasYPrecedant);
+            etapesFines.push_back(laPaire);
+            etapesAcceleration.push_back(laPaire);
+            etapesAccelerationDeceleration.push_back(laPaire);
+            xCourant+=pasXPrecedant;
+            yCourant+=pasYPrecedant;
+            }
+        //on regarde maintenant si l'espace restant jusqu'au milieu du segmant est >= a la moitiée de l'étape precedente permettant alors de la rajouter.
+        if((xCourant+1+pasXPrecedant/2>=std::min(xmilieu,xd) and pasXPrecedant/2+1+xCourant<std::max(xmilieu,xd) and pasYPrecedant/2+1+yCourant>=std::min(ymilieu,yd) and pasYPrecedant/2+1+yCourant<std::max(ymilieu,yd) )){
+                std::pair<int,int> laPaire = std::pair<int,int>(pasXPrecedant,pasYPrecedant);
+            etapesFines.push_back(laPaire);
+            //etapesAcceleration.push_back(laPaire);
+            etapesAccelerationDeceleration.push_back(laPaire);
+            xCourant+=pasXPrecedant;
+            yCourant+=pasYPrecedant;
+            }
+
+        //on vient de faire la periode d'acceleration, maintenant on decelere.
+        for (std::vector<std::pair<int,int>>::reverse_iterator i = etapesAcceleration.rbegin(); i != etapesAcceleration.rend(); ++i)
+        {
+            //std::cout<<'['<<(*i).first<<';'<<(*i).second<<"],";
+            etapesFines.push_back(std::pair<int,int>((*i).first,(*i).second));
+            etapesAccelerationDeceleration.push_back(std::pair<int,int>((*i).first,(*i).second));
+            xCourant+=(*i).first;
+            yCourant+=(*i).second;
+        }
+       
+        if(xf- xCourant==0 and yf- yCourant==0){
+            std::cout<<"On est arrivé a bon port !"<<std::endl;
+        }else if (manhattan(xf- xCourant,yf- yCourant)<=maxAcceleration){
+            //l'espace restant jusqu'a la fin est inferieur a l'acceleration maximale
+            etapesFines.push_back(std::pair<int,int>(xf- xCourant,yf- yCourant));
+            etapesAccelerationDeceleration.push_back(std::pair<int,int>(xf- xCourant,yf- yCourant));
+            xCourant+=xf- xCourant;
+            yCourant+=yf- yCourant;
+            
+        }else{
+            //l'espace restant est superieru a l'acceleration maximale
+            bool xfPlusGrd=xf>xCourant;
+            while((xCourant+pasX<xf and xfPlusGrd) or (xf<xCourant+pasX and not(xfPlusGrd))){
+                etapesFines.push_back(std::pair<int,int>(pasX,(m*(xCourant+pasX-xd)+yd)- yCourant));
+                etapesAccelerationDeceleration.push_back(std::pair<int,int>(pasX,(m*(xCourant+pasX-xd)+yd)- yCourant));
+                xCourant+=pasX;
+                yCourant=(m*(xCourant-xd)+yd);
+            }
+            std::cout<<"On rajoute une petite etape : xc/yc "<<xCourant<<'/'<<yCourant<<std::endl;
+            //ON revient au cas precedent...
+            etapesFines.push_back(std::pair<int,int>(xf- xCourant,yf- yCourant));
+            etapesAccelerationDeceleration.push_back(std::pair<int,int>(xf- xCourant,yf- yCourant));
+            xCourant+=xf- xCourant;
+            yCourant+=yf- yCourant;
+           
+        }
+
+        std::cout<<'[';
+        for (std::vector<std::pair<int,int>>::iterator i = etapesAccelerationDeceleration.begin(); i != etapesAccelerationDeceleration.end(); ++i)
+            {
+                std::cout<<'['<<(*i).first<<';'<<(*i).second<<"],";
+            }
+        std::cout<<std::endl;
+        
+        xd=xf;
+        yd=yf;
+        i++;
+        
+    }
+    int xTest=departureX;
+    int yTest=departureY;
+    std::cout<<'[';
+    for (std::vector<std::pair<int,int>>::iterator i = etapesFines.begin(); i != etapesFines.end(); ++i)
+        {
+            std::cout<<'['<<(*i).first<<';'<<(*i).second<<"],";
+            xTest+=(*i).first;
+            yTest+=(*i).second;
+        }
+    std::cout<<std::endl;
+    std::cout<<"Size : "<<etapesFines.size()<<std::endl;
     std::cout<<"Remplacement de la Trajectoire... "<<std::endl;
 
     this->remplacerTrajectoire(etapesFines);

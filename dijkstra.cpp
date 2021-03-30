@@ -39,9 +39,9 @@ auto comp = [](const pair<int, int> &a, const pair<int, int> &b) {return a.secon
  **/
 void Dijkstra::algoDijkstra () {
  //crédit : 40tude.fr
+	cout<<"on lance Dijkstra"<<endl;
   
   int StartNode = 0;
-  //cin >> StartNode;
  
   vector<int>* Distances = new vector<int>(img->height*img->width, numeric_limits<int>::max());                   
  
@@ -71,14 +71,14 @@ void Dijkstra::algoDijkstra () {
     }
   }
  
-  for (auto i = 0; i != NbNodes; ++i) {
+  /*for (auto i = 0; i != NbNodes; ++i) {
     cout << "\nPath from node " << StartNode << " to node " << i << " cost " << (*Distances)[i] << endl;
  
     cout << i;
     for (auto p = (*Parents)[i]; p != -1; p = (*Parents)[p])
       cout << " <- " << p;
     cout << endl;         
-  }
+  }*/
   chemin.push_back(noeudArrivee);
   cout << noeudArrivee;
   for (auto p = (*Parents)[noeudArrivee]; p != -1; p = (*Parents)[p]){
@@ -100,6 +100,7 @@ void Dijkstra::algoDijkstra () {
 * des sommets pour l'algorithme de dijkstra
 **/
 void Dijkstra::createGraph(){
+	cout<<"Creation du graph"<<endl;
 	int indexNoeud = 1;
 
 	int maxAcceleration=(img->maxAcceleration)/2;
@@ -235,7 +236,8 @@ void Dijkstra::createGraph(){
 		}
 	}
 	int indice=0;
-	for (vector<vector<pair<int, int>>>::iterator i = graph.begin(); i != graph.end(); ++i)
+	//affiche les noeuds
+	/*for (vector<vector<pair<int, int>>>::iterator i = graph.begin(); i != graph.end(); ++i)
 		{
 			cout<<indice++<<" : [";
 			for (std::vector<pair<int,int>>::iterator j = (*i).begin(); j != (*i).end(); ++j)
@@ -245,14 +247,12 @@ void Dijkstra::createGraph(){
 			cout<<']'<<endl;
 
 			
-		}
+		}*/
 indice=0;
 this->NbNodes=graph.size();
 cout<<"Nombre de noeuds : "<<NbNodes<<endl;
 	this->G=graph;
 	this->coor=coordonnees;
-
-	cout<<"\n\nCoor de départ : "<<coor[0].first<<' '<<coor[0].second<<endl;
 }
 
 /**
@@ -260,11 +260,11 @@ cout<<"Nombre de noeuds : "<<NbNodes<<endl;
 *
 **/
 void Dijkstra::chercherNoeudArrive(){
+	cout<<"Recherche du noeud d'arrivée"<<endl;
 	int ndMax;
 	int distanceMini=max(img->height,img->width);
 	int distanceRes;
 	this->noeudDansArrivee=false;
-
 	for (std::map<int,pair<int,int>>::iterator i = coor.begin(); i != coor.end(); ++i)
 	{
 		if(img->verifierArrivee2((*i).second.first,(*i).second.second) ){
@@ -274,8 +274,6 @@ void Dijkstra::chercherNoeudArrive(){
 		}
 		distanceRes = traj->distanceMiniArrivee((*i).second.first,(*i).second.second);
 		
-		cout<<(*i).first<<" "<<distanceRes<<endl;
-
 		if(distanceMini>distanceRes){
 			ndMax = (*i).first;
 			distanceMini = distanceRes;
@@ -297,6 +295,7 @@ void Dijkstra::transformer(){
 	int indice=1;
 	int x=coor[0].first;
 	int y=coor[0].second;
+	cout<<"On traduit le chemin de sommet en sommet en une liste d'étapes de vitesse : "<<std::endl;
 	cout<<"X & y de départ : "<<x<<' '<<y<<endl;
 	cout<<"trajectoire= ["<<endl;
 
@@ -307,11 +306,9 @@ void Dijkstra::transformer(){
 	int xs,ys;
 
 	while(i != chemin.rend()){
-		cout<<"xc & yc : "<<coor[*i].first<<' '<<coor[*i].second<<"\t res : ";
 		xs=coor[*i].first-x;
 		ys=coor[*i].second-y;
-		cout<<x<<' '<<y;
-		cout<<"["<<xs<<','<<ys<<"],"<<endl;
+		cout<<"["<<xs<<','<<ys<<"],";
 		
 		x=coor[*i].first;
 		y=coor[*i].second;
